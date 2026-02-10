@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Sign In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+
+            /* Primary */
+            --color-primary-500: #ff0000;
+
+            /* Neutral */
+            --color-neutral-0: #ffffff;
+            --color-neutral-100: #D5D6D4;
+            --color-neutral-300: #A9ACAB;
+            --color-neutral-500: #6C7273;
+            --color-neutral-900: #101820;
+        }
+
+        /* =========================================================
+            Reset & Base
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            font-family: 'Roboto', sans-serif !important;
+            height: 100%;
+            margin: 0;
+            background: var(--color-neutral-0);
+        }
+
+        /* =========================================================
+            Layout (Page)
+        ========================================================= */
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .left {
+            flex: 1.05;
+            background-image: url("https://placehold.co/488x951");
+            background-position: center;
+            border-top-right-radius: 24px;
+            border-bottom-right-radius: 24px;
+            margin: 0;
+        }
+
+        .right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand img {
+            width: auto;
+            padding-left: 40px;
+            padding-top: 24px;
+        }
+
+        .panel {
+            flex: 1;
+            gap: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .login_form {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap: 24px;
+            padding: 56px 88px;
+        }
+
+        /* =========================================================
+            Header / Typography
+        ========================================================= */
+
+        .header_form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-style: bold;
+            font-weight: 400;
+            line-height: 115%;
+            letter-spacing: -2%;
+            color: var(--color-neutral-900);
+            margin: 0;
+        }
+
+        .subtitle {
+            color: var(--color-neutral-500);
+            font-size: 19px;
+            font-weight: 325;
+            line-height: 120%;
+            letter-spacing: -1%;
+        }
+
+        /* =========================================================
+            Auth0 Lock - Base / Layout overrides
+        ========================================================= */
+
+        .auth0-lock.auth0-lock * {
+            font-family: inherit !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-header {
+            display: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-content {
+            padding-top: 0 !important;
+        }
+
+        .auth0-lock-center {
+            padding: 0 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-form {
+            padding: 0 !important;
+        }
+
+        /* NOTE: This selector is kept as-is */
+        .auth0-lock-input-wrap .auth0-lock-input-wrap-with-icon {
+            padding-left: 0 !important;
+        }
+
+        /* =========================================================
+            Auth0 Lock - Inputs / Wrap / Focus / Placeholder
+        ========================================================= */
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-input {
+            padding: 14px 16px !important;
+        }
+
+        .auth0-lock.auth0-lock input {
+            font-size: 17px !important;
+            color: var(--color-neutral-500) !important;
+            border-radius: 14px !important;
+            line-height: 130% !important;
+            letter-spacing: -1% !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap.auth0-lock-focused {
+            border-color: var(--color-neutral-500) !important;
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.12) !important;
+        }
+
+        .auth0-lock.auth0-lock input::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        /* =========================================================
+            Auth0 Lock - Icons
+        ========================================================= */
+
+        .auth0-lock.auth0-lock .auth0-lock-input-icon {
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-neutral-900);
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--color-neutral-900);
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap.auth0-lock-focused .auth0-lock-input-icon svg {
+            fill: var(--color-primary-500);
+        }
+
+        /* =========================================================
+            Auth0 Lock - Password visibility toggle
+        ========================================================= */
+
+        /* Campo con altura fija para que el centrado sea consistente */
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap {
+            font-family: 'Roboto', sans-serif !important;
+            border: 1px solid var(--color-neutral-100) !important;
+            border-radius: 14px !important;
+            box-shadow: none !important;
+            background: #ffffff !important;
+
+            position: relative !important;
+        }
+
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-input,
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap input {
+            height: 52px !important;
+            padding: 0 52px 0 44px !important;
+            line-height: normal !important;
+            box-sizing: border-box !important;
+        }
+
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-show-password {
+            position: absolute !important;
+            right: 16px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 2 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-show-password {
+            color: var(--color-neutral-300);
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-show-password:hover {
+            color: var(--color-primary-500);
+        }
+
+        /* =========================================================
+            Auth0 Lock - Submit Button
+        ========================================================= */
+
+        .auth0-lock.auth0-lock .auth0-lock-submit {
+            font-family: 'Roboto', sans-serif !important;
+            border-radius: 14px !important;
+            background: var(--color-primary-500) !important;
+            border: 1px solid var(--color-primary-500) !important;
+            padding: 12px 18px !important;
+            font-size: 17px !important;
+            font-weight: 400 !important;
+            font-style: bold !important;
+            line-height: 23px !important;
+            text-transform: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit svg {
+            display: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit .auth0-label-submit {
+            height: auto !important;
+            line-height: 23px !important;
+            letter-spacing: -2% !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit:hover {
+            background: #cc0000 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit[disabled] {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* =========================================================
+            Auth0 Lock - Input Labels & Errors
+        ========================================================= */
+
+        .auth0-lock.auth0-lock .auth0-lock-input-label {
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--color-neutral-900) !important;
+            letter-spacing: 135% !important;
+            letter-spacing: 0% !important;
+            text-transform: uppercase !important;
+            margin-bottom: 6px;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-error {
+            color: #dc2626;
+            font-size: 13px;
+        }
+
+        /* =========================================================
+            Auth0 Lock - Alternative (Forgot password)
+        ========================================================= */
+
+        .auth0-lock-alternative {
+            text-align: right !important;
+            padding: 0 !important;
+            margin-top: 24px !important;
+            margin-bottom: 24px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-form .auth0-lock-alternative .auth0-lock-alternative-link {
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 17px !important;
+            font-weight: 400 !important;
+            font-style: bold !important;
+            color: var(--color-neutral-900) !important;
+            letter-spacing: 130% !important;
+            letter-spacing: -1% !important;
+        }
+
+        /* =========================================================
+            Auth switch link
+        ========================================================= */
+
+        .auth-switch {
+            font-size: 17px !important;
+            color: var(--color-neutral-500) !important;
+            border-radius: 14px !important;
+            line-height: 130% !important;
+            font-weight: 400 !important;
+            letter-spacing: -1% !important;
+        }
+
+        .auth-switch a {
+            color: var(--color-neutral-900);
+            text-decoration: underline !important;
+        }
+
+        /* =========================================================
+            Responsive
+           ========================================================= */
+        @media (max-width: 920px) {
+            .left {
+                display: none;
+            }
+
+            .right {
+                padding: 32px 16px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Polyfills legacy -->
+    <!--[if IE 8]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.5/ie8.js"></script>
+  <![endif]-->
+
+    <!--[if lte IE 9]>
+  <script src="https://cdn.auth0.com/js/base64.js"></script>
+  <script src="https://cdn.auth0.com/js/es5-shim.min.js"></script>
+  <![endif]-->
+
+    <div class="page">
+        <div class="left"></div>
+
+        <div class="right">
+            <div class="brand">
+                <img src="https://placehold.co/160x37" alt="Logo" />
+            </div>
+            <div class="panel">
+                <div class="login_form">
+                    <div class="header_form">
+                        <h1>Welcome to DaedaPanel</h1>
+                        <p class="subtitle">Lorem ipsum dolor sit amet, consectetur</p>
+                    </div>
+
+                    <!-- Render Lock -->
+                    <div id="lock-container"></div>
+
+                    <!-- Switch (Login <-> SignUp) by URL -->
+                    <p class="auth-switch" id="auth-switch"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.auth0.com/js/lock/14.2.3/lock.min.js"></script>
+
+    <script>
+        var config = JSON.parse(decodeURIComponent(escape(window.atob('@@config@@'))));
+        config.extraParams = config.extraParams || {};
+        var prompt = config.prompt;
+        var languageDictionary;
+        var language;
+
+        if (config.dict && config.dict.signin && config.dict.signin.title) {
+            languageDictionary = { title: config.dict.signin.title };
+        } else if (typeof config.dict === 'string') {
+            language = config.dict;
+        }
+
+        var loginHint = config.extraParams.login_hint;
+        var colors = config.colors || {};
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var isSignUp = urlParams.get('screen') === 'signup';
+        var initialScreen = isSignUp ? 'signUp' : 'login';
+
+        var switchEl = document.getElementById('auth-switch');
+        if (switchEl) {
+            switchEl.innerHTML = isSignUp
+                ? 'Already have an account? <a href="?screen=login">Sign in</a>'
+                : 'Don’t have an account? <a href="?screen=signup">Register</a>';
+        }
+
+        var lock = new Auth0Lock(config.clientID, config.auth0Domain, {
+            auth: {
+                redirectUrl: config.callbackURL,
+                responseType: (config.internalOptions || {}).response_type ||
+                    (config.callbackOnLocationHash ? 'token' : 'code'),
+                params: config.internalOptions
+            },
+            configurationBaseUrl: config.clientConfigurationBaseUrl,
+            overrides: {
+                __tenant: config.auth0Tenant,
+                __token_issuer: config.authorizationServer.issuer
+            },
+            assetsUrl: config.assetsUrl,
+
+            allowedConnections: ['Username-Password-Authentication'],
+
+            initialScreen: initialScreen,
+            allowLogin: !isSignUp,
+            allowSignUp: isSignUp,
+
+            rememberLastLogin: !prompt,
+            language: language,
+            languageBaseUrl: config.languageBaseUrl,
+            languageDictionary: languageDictionary,
+
+            theme: {
+                logo: 'https://placehold.co/160x37',
+                primaryColor: colors.primary ? colors.primary : '#ff0000'
+            },
+
+            languageDictionary: {
+                title: 'Welcome to DaedaPanel',
+                description: 'Please enter your corresponding credentials',
+                emailInputPlaceholder: 'Type your email address',
+                passwordInputPlaceholder: 'Type your password',
+                emailInputHeader: 'EMAIL ADDRESS',
+                passwordInputHeader: 'PASSWORD',
+                forgotPasswordAction: 'Forgot password?',
+                forgotPasswordTitle: 'Forgot your password?',
+                forgotPasswordInstructions:
+                    "We'll send you an email to reset your password if the email is registered in the system. If you still do not have an account in the system please contact an admin or support.",
+                forgotPasswordSubmitLabel: 'Send email',
+                loginSubmitLabel: 'Sign in',
+                blankErrorHint: 'Cannot be blank',
+            },
+
+            prefill: loginHint ? { email: loginHint, username: loginHint } : null,
+
+            closable: false,
+            allowShowPassword: true,
+            allowShowPassword: false,
+            container: 'lock-container'
+        });
+
+        lock.show();
+
+        // Add custom labels after Lock is shown
+        lock.on('show', function () {
+            setTimeout(function () {
+
+                // Add email label
+                var emailBlock = document.querySelector('div.auth0-lock-input-block.auth0-lock-input-email');
+                if (emailBlock) {
+                    var existingEmailLabel = emailBlock.querySelector('.auth0-lock-input-label');
+                    if (existingEmailLabel) existingEmailLabel.remove();
+
+                    var emailLabel = document.createElement('div');
+                    emailLabel.className = 'auth0-lock-input-label';
+                    emailLabel.textContent = 'EMAIL ADDRESS';
+                    emailBlock.insertBefore(emailLabel, emailBlock.firstChild);
+                }
+
+                // Add password label
+                var passwordBlock = document.querySelector('div.auth0-lock-input-block.auth0-lock-input-password');
+                if (passwordBlock) {
+                    var existingPasswordLabel = passwordBlock.querySelector('.auth0-lock-input-label');
+                    if (existingPasswordLabel) existingPasswordLabel.remove();
+
+                    var passwordLabel = document.createElement('div');
+                    passwordLabel.className = 'auth0-lock-input-label';
+                    passwordLabel.textContent = 'PASSWORD';
+                    passwordBlock.insertBefore(passwordLabel, passwordBlock.firstChild);
+                }
+
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
