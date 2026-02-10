@@ -546,6 +546,32 @@
         .auth0-lock-show-password {
             margin-top: 20px !important;
         }
+
+        .header-form-forgot-password {
+            text-align: center;
+        }
+
+        .password-set-successfully-bottom {
+            min-height: 96px;
+            padding: 16px 32px;
+            align-items: center;
+        }
+        
+        .go-back-login {
+            background-color: var(--color-primary-500);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 16px;
+            letter-spacing: 0;
+            width: 100%;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+        }
     </style>
 
 </head>
@@ -595,9 +621,23 @@
                     </p>
 
                 </div>
+                <div class="header-form-forgot-password" style="display: none;">
+
+                    <h1>
+                        Forgot password?
+                    </h1>
+
+                    <p class="subtitle">
+                        Please enter your email address. We will send you an link to reset your password.
+                    </p>
+
+                </div>
 
                 <div class="lock-container-panel">
                     <div id="lock-container"></div>
+                </div>
+                <div class="password-set-successfully-bottom" style="display: none;">
+                    <a id="go-back-login-btn" href="https://{{ application.callback_domain }}/auth/login" class="go-back-login">Go back to login</a>
                 </div>
                 <p class="auth-switch" id="auth-switch"></p>
             </div>
@@ -612,7 +652,6 @@
 
 
     <script>
-        
 
         var config =
             JSON.parse(
@@ -691,36 +730,6 @@
 
         lock.show();
 
-        lock.on('signup ready', () => {
-            const switchSignup = document.querySelector("#auth-switch");
-            console.log('switchSignup', switchSignup);
-            switchSignup.style.setProperty('display', 'none', 'important');
-            const inputElement = document.querySelector('input[name="password"]');
-            if (inputElement) {
-                inputElement.addEventListener('input', handleChange);
-            };
-        });
-
-        lock.on('signin ready', () => {
-            console.log('Signin ready');
-
-            const switchSignup = document.querySelector("#auth-switch");
-            console.log('switchSignup', switchSignup);
-            switchSignup.style.setProperty('display', 'flex', 'important');
-
-            if (switchSignup) {
-                inputElement.addEventListener('click', handleChange);
-            };
-
-        });
-
-        function handleChange(event) {
-            console.log('Input v alue changed:', event.target.value);
-        }
-
-        function handleClick(event) {
-            console.log('Input v alue clicked:', event.target.value);
-        }
 
         window.addEventListener('load', () => {
             // Just in case, we run it again on load to cover any last-minute renders
@@ -811,6 +820,22 @@
 
                 switchEl.innerHTML = "Don’t have an account?<span href=\"\"> Register</span>";
 
+                var link = document.getElementById("auth-switch");
+
+                if (link) {
+
+                    link.onclick = function (e) {
+
+                        e.preventDefault();
+
+                        lock.show({
+                            initialScreen: 'signUp'
+                        });
+
+                    };
+
+                }
+
             }
 
 
@@ -891,19 +916,51 @@
         // Customize forgot password screen
         let formSubmitted = false;
 
+
+        // Define the function to run when the event occurs
+        function handleChange(event) {
+                console.log('Input v alue changed:', event.target.value);
+                // You can add more logic here
+        }
+
+        lock.on('signup ready', () => {
+            const switchSignup = document.querySelector("#auth-switch");
+            console.log('switchSignup', switchSignup);
+            switchSignup.style.setProperty('display', 'none', 'important');
+            const inputElement = document.querySelector('input[name="password"]');
+            if (inputElement) {
+                inputElement.addEventListener('input', handleChange);
+            };
+        });
+
+        lock.on('signin ready', () => {
+            console.log('Signin ready');
+
+             const switchSignup = document.querySelector("#auth-switch");
+            console.log('switchSignup', switchSignup);
+            switchSignup.style.setProperty('display', 'flex', 'important');
+        });
+
         lock.on('forgot_password ready', () => {
             const formHeader = document.querySelector('.header_form');
+            const formHeaderForgotPassword = document.querySelector('.header-form-forgot-password');
             const paragraph = document.querySelector('.auth0-lock-form > div > p');
             const input = document.querySelector('.auth0-lock-input-block.auth0-lock-input-email');
+            const switchEl = document.getElementById('auth-switch');
+
+            if (formHeaderForgotPassword) {
+                formHeaderForgotPassword.style.display = 'block';
+            }
+
+            if (switchEl) {
+                switchEl.remove();
+            }
 
             if (formHeader) {
-                const title = formHeader.querySelector('h1');
-                const subtitle = formHeader.querySelector('.subtitle');
-                if (title) title.textContent = 'Forgot password?';
-                if (subtitle) subtitle.textContent = 'Please enter your email address. We will send you an link to reset your password.';
+                formHeader.remove();
             }
             if (paragraph) {
-                paragraph.style.display = 'none';
+                paragraph.remove();
             }
             if (input) {
                 input.style.marginBottom = '32px';
@@ -926,14 +983,17 @@
 
                 // hide header and body of the form
                 if (formBox) formBox.classList.add('forgot-password-success');
-                const redirectLink = document.getElementById('redirect-login');
+                const redirectContainer = document.querySelector('.password-set-successfully-bottom');
+                if (redirectContainer) redirectContainer.style.display = 'flex';
+
+                const redirectLink = document.getElementById('go-back-login-btn');
                 if (redirectLink) {
                     const link = config.callbackURL || '/';
                     const cleanLink = link.replace('/auth/callback', '');
                     redirectLink.style.display = 'flex';
                     redirectLink.href = cleanLink;
                 }
-                const formHeader = document.querySelector('.header_form');
+                const formHeader = document.querySelector('.header-form-forgot-password');
                 if (formHeader) {
                     const title = formHeader.querySelector('h1');
                     const subtitle = formHeader.querySelector('.subtitle');
