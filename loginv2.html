@@ -731,6 +731,44 @@
         lock.show();
 
 
+        function handleChange(event) {
+                console.log('Input v alue changed:', event.target.value);
+        }
+
+        function handleClick(event) {
+            
+             const activeTab =
+                document.querySelector('.auth0-lock-tabs li:not(.auth0-lock-tabs-current) a');
+             if (activeTab) {
+                activeTab.click();
+            };
+
+        }
+
+        // Sign up
+        lock.on('signup ready', () => {
+            const switchSignup = document.querySelector("#auth-switch");
+            console.log('switchSignup', switchSignup);
+            switchSignup.style.setProperty('display', 'none', 'important');
+            const inputElement = document.querySelector('input[name="password"]');
+            if (inputElement) {
+                inputElement.addEventListener('input', handleChange);
+            };
+        });
+
+        // Login / Sign in
+        lock.on('signin ready', () => {
+            console.log('Signin ready');
+            const switchSignup = document.querySelector("#auth-switch");
+            switchSignup.innerHTML = "Don’t have an account?<span href=\"\">&nbsp;Register</span>";
+            switchSignup.style.setProperty('display', 'flex', 'important');
+
+            if(switchSignup) {
+                switchSignup.addEventListener('click', handleClick);
+            };
+          
+        });
+
         window.addEventListener('load', () => {
             // Just in case, we run it again on load to cover any last-minute renders
             addCustomLabels();
@@ -794,9 +832,7 @@
             const title = header.querySelector('h1');
             const subtitle = header.querySelector('.subtitle');
 
-            var switchEl = document.getElementById('auth-switch');
-
-            if (!title || !subtitle || !switchEl) return;
+            if (!title || !subtitle) return;
 
 
             const activeTab =
@@ -817,25 +853,6 @@
 
                 subtitle.textContent =
                     "Welcome back! Please enter your details";
-
-                switchEl.innerHTML = "Don’t have an account?<span href=\"\"> Register</span>";
-
-                var link = document.getElementById("auth-switch");
-
-                if (link) {
-
-                    link.onclick = function (e) {
-
-                        e.preventDefault();
-
-                        lock.show({
-                            initialScreen: 'signUp'
-                        });
-
-                    };
-
-                }
-
             }
 
 
@@ -915,31 +932,6 @@
 
         // Customize forgot password screen
         let formSubmitted = false;
-
-
-        // Define the function to run when the event occurs
-        function handleChange(event) {
-                console.log('Input v alue changed:', event.target.value);
-                // You can add more logic here
-        }
-
-        lock.on('signup ready', () => {
-            const switchSignup = document.querySelector("#auth-switch");
-            console.log('switchSignup', switchSignup);
-            switchSignup.style.setProperty('display', 'none', 'important');
-            const inputElement = document.querySelector('input[name="password"]');
-            if (inputElement) {
-                inputElement.addEventListener('input', handleChange);
-            };
-        });
-
-        lock.on('signin ready', () => {
-            console.log('Signin ready');
-
-             const switchSignup = document.querySelector("#auth-switch");
-            console.log('switchSignup', switchSignup);
-            switchSignup.style.setProperty('display', 'flex', 'important');
-        });
 
         lock.on('forgot_password ready', () => {
             const formHeader = document.querySelector('.header_form');
