@@ -486,6 +486,36 @@
 
         /*  Password validation */
 
+         #password-rules {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+      }
+
+      #password-rules > p {
+        margin: 0px !important;
+        text-align: left !important;
+        font-size: 12px !important;
+        line-height: 16px !important;
+        letter-spacing: 1.5% !important;
+        color: #6c7273 !important;
+        display: flex !important;
+        gap: 4px !important;
+      }
+
+      
+         #password-rules svg path {
+        fill: #6C7273;
+      }
+
+      #password-rules .valid svg path {
+        fill: #059669 !important;
+      }
+
+      #password-rules .valid {
+        color: #059669 !important;
+      }
 
 
         /* =========================================================
@@ -531,12 +561,7 @@
         }
 
         .auth0-lock-password-strength {
-            display: block !important;
-            bottom: unset !important;
-            top: 55px !important;
-            display: flex !important;
-            background: transparent !important;
-            box-shadow: none !important;
+            display: none !important;
         }
 
         .auth0-lock-password-strength::after {
@@ -556,7 +581,7 @@
             padding: 16px 32px;
             align-items: center;
         }
-        
+
         .go-back-login {
             background-color: var(--color-primary-500);
             color: white;
@@ -637,7 +662,8 @@
                     <div id="lock-container"></div>
                 </div>
                 <div class="password-set-successfully-bottom" style="display: none;">
-                    <a id="go-back-login-btn" href="https://{{ application.callback_domain }}/auth/login" class="go-back-login">Go back to login</a>
+                    <a id="go-back-login-btn" href="https://{{ application.callback_domain }}/auth/login"
+                        class="go-back-login">Go back to login</a>
                 </div>
                 <p class="auth-switch" id="auth-switch"></p>
             </div>
@@ -730,16 +756,125 @@
 
         lock.show();
 
+        const passwordPolicy = {
+            length: {
+                minLength: 8,
+            },
+
+            containsAtLeast: {
+                atLeast: 3,
+
+                expressions: [
+                    {
+                        name: "upperCase",
+
+                        explain() {
+                            return {
+                                message: "upper case letters (A-Z)",
+                                code: "upperCase",
+                            };
+                        },
+
+                        test(value) {
+                            return /[A-Z]/.test(value);
+                        },
+                    },
+
+                    {
+                        name: "lowerCase",
+
+                        explain() {
+                            return {
+                                message: "lower case letters (a-z)",
+                                code: "lowerCase",
+                            };
+                        },
+
+                        test(value) {
+                            return /[a-z]/.test(value);
+                        },
+                    },
+
+                    {
+                        name: "numbers",
+
+                        explain() {
+                            return {
+                                message: "numbers (i.e. 0-9)",
+                                code: "numbers",
+                            };
+                        },
+
+                        test(value) {
+                            return /\d/.test(value);
+                        },
+                    },
+
+                    {
+                        name: "specialCharacters",
+
+                        explain() {
+                            return {
+                                message: "special characters (e.g. !@#$%^&*)",
+                                code: "specialCharacters",
+                            };
+                        },
+
+                        test(value) {
+                            return /[!@#$%^&*(),.?":{}|<>_\-\\[\]\/+=~`]/.test(value);
+                        },
+                    },
+                ],
+            },
+        };
+
+        function attachPasswordValidation() {
+            const policy = passwordPolicy;
+            if (!policy || !policy.containsAtLeast) return;
+
+            const expressions = policy.containsAtLeast.expressions || [];
+
+            const passwordInput = document.querySelector(
+                'input[name="password"]'
+            );
+
+            if (!passwordInput) return;
+
+            passwordInput.addEventListener('input', () => {
+                const value = passwordInput.value;
+
+                if (policy?.length?.minLength) {
+                    document
+                        .getElementById('minLength')
+                        ?.classList.toggle('valid', value.length >= policy.length.minLength);
+                }
+                let validCount = 0;
+                expressions.forEach((exp) => {
+                    const ruleId = exp?.explain?.()?.code || exp?.name || '';
+                    if (!ruleId) return;
+
+                    const ruleElement = document.getElementById(ruleId);
+                    if (!ruleElement) return;
+
+                    const match = exp.test(value);
+                    ruleElement.classList.toggle('valid', match);
+                    if (match) validCount++;
+                });
+                document
+                    .getElementById('at-least-3-valid')
+                    ?.classList.toggle('valid', validCount >= 3);
+            });
+        }
 
         function handleChange(event) {
-                console.log('Input v alue changed:', event.target.value);
+            console.log('Input v alue changed:', event.target.value);
         }
 
         function handleClick(event) {
-            
-             const activeTab =
+
+            const activeTab =
                 document.querySelector('.auth0-lock-tabs li:not(.auth0-lock-tabs-current) a');
-             if (activeTab) {
+            if (activeTab) {
                 activeTab.click();
             };
 
@@ -750,10 +885,11 @@
             const switchSignup = document.querySelector("#auth-switch");
             console.log('switchSignup', switchSignup);
             switchSignup.style.setProperty('display', 'none', 'important');
-            const inputElement = document.querySelector('input[name="password"]');
-            if (inputElement) {
-                inputElement.addEventListener('input', handleChange);
-            };
+            const inputElement = document.querySelector('.auth0-lock-input-block.auth0-lock-input-password');
+            injectPasswordRulesAfterInput(inputElement);
+
+            // Make sure the validation is attached AFTER rules exist
+            attachPasswordValidation();
         });
 
         // Login / Sign in
@@ -763,10 +899,10 @@
             switchSignup.innerHTML = "Don’t have an account?<span href=\"\">&nbsp;Register</span>";
             switchSignup.style.setProperty('display', 'flex', 'important');
 
-            if(switchSignup) {
+            if (switchSignup) {
                 switchSignup.addEventListener('click', handleClick);
             };
-          
+
         });
 
         window.addEventListener('load', () => {
@@ -774,7 +910,65 @@
             addCustomLabels();
             replaceLockErrorsByField();
             updateHeaderFormText();
+
+            attachPasswordValidation();
         });
+
+        function injectPasswordRulesAfterInput(inputElement) {
+            if (!inputElement) return;
+
+            // Avoid duplicating on re-renders
+            if (document.getElementById("password-rules")) return;
+
+            const rulesHtml = `
+    <div id="password-rules" style="display: none">
+      <p id="minLength">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.40002 1.46704C12.229 1.46722 15.3336 4.57157 15.3336 8.40063C15.3333 12.2294 12.2289 15.3331 8.40002 15.3333C4.5712 15.3331 1.46772 12.2294 1.46741 8.40063C1.46741 4.57157 4.571 1.46722 8.40002 1.46704ZM8.40002 2.66724C5.23374 2.66741 2.66663 5.23431 2.66663 8.40063C2.66694 11.5667 5.23394 14.1339 8.40002 14.134C11.5661 14.1339 14.1331 11.5667 14.1334 8.40063C14.1334 5.23431 11.5663 2.66741 8.40002 2.66724ZM10.4908 6.09497C10.7147 5.85079 11.0942 5.83421 11.3385 6.05786C11.5826 6.2818 11.5995 6.6613 11.3756 6.90552L7.89221 10.7053C7.78173 10.8258 7.62693 10.896 7.4635 10.8997C7.30007 10.9032 7.14169 10.8403 7.026 10.7249L5.44299 9.14087C5.20869 8.90657 5.20871 8.52655 5.44299 8.29224C5.6772 8.05849 6.05644 8.05849 6.29065 8.29224L7.4303 9.43188L10.4908 6.09497Z" fill="currentColor"/>
+        </svg>
+        At least 8 characters
+      </p>
+
+      <p id="at-least-3-valid">
+        Contain at least 3 of the following 4 types of characters:
+      </p>
+
+      <p id="lowerCase">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.40002 1.46704C12.229 1.46722 15.3336 4.57157 15.3336 8.40063C15.3333 12.2294 12.2289 15.3331 8.40002 15.3333C4.5712 15.3331 1.46772 12.2294 1.46741 8.40063C1.46741 4.57157 4.571 1.46722 8.40002 1.46704ZM8.40002 2.66724C5.23374 2.66741 2.66663 5.23431 2.66663 8.40063C2.66694 11.5667 5.23394 14.1339 8.40002 14.134C11.5661 14.1339 14.1331 11.5667 14.1334 8.40063C14.1334 5.23431 11.5663 2.66741 8.40002 2.66724ZM10.4908 6.09497C10.7147 5.85079 11.0942 5.83421 11.3385 6.05786C11.5826 6.2818 11.5995 6.6613 11.3756 6.90552L7.89221 10.7053C7.78173 10.8258 7.62693 10.896 7.4635 10.8997C7.30007 10.9032 7.14169 10.8403 7.026 10.7249L5.44299 9.14087C5.20869 8.90657 5.20871 8.52655 5.44299 8.29224C5.6772 8.05849 6.05644 8.05849 6.29065 8.29224L7.4303 9.43188L10.4908 6.09497Z" fill="currentColor"/>
+        </svg>
+        At least 1 lowercase
+      </p>
+
+      <p id="upperCase">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.40002 1.46704C12.229 1.46722 15.3336 4.57157 15.3336 8.40063C15.3333 12.2294 12.2289 15.3331 8.40002 15.3333C4.5712 15.3331 1.46772 12.2294 1.46741 8.40063C1.46741 4.57157 4.571 1.46722 8.40002 1.46704ZM8.40002 2.66724C5.23374 2.66741 2.66663 5.23431 2.66663 8.40063C2.66694 11.5667 5.23394 14.1339 8.40002 14.134C11.5661 14.1339 14.1331 11.5667 14.1334 8.40063C14.1334 5.23431 11.5663 2.66741 8.40002 2.66724ZM10.4908 6.09497C10.7147 5.85079 11.0942 5.83421 11.3385 6.05786C11.5826 6.2818 11.5995 6.6613 11.3756 6.90552L7.89221 10.7053C7.78173 10.8258 7.62693 10.896 7.4635 10.8997C7.30007 10.9032 7.14169 10.8403 7.026 10.7249L5.44299 9.14087C5.20869 8.90657 5.20871 8.52655 5.44299 8.29224C5.6772 8.05849 6.05644 8.05849 6.29065 8.29224L7.4303 9.43188L10.4908 6.09497Z" fill="currentColor"/>
+        </svg>
+        At least 1 uppercase
+      </p>
+
+      <p id="numbers">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.40002 1.46704C12.229 1.46722 15.3336 4.57157 15.3336 8.40063C15.3333 12.2294 12.2289 15.3331 8.40002 15.3333C4.5712 15.3331 1.46772 12.2294 1.46741 8.40063C1.46741 4.57157 4.571 1.46722 8.40002 1.46704ZM8.40002 2.66724C5.23374 2.66741 2.66663 5.23431 2.66663 8.40063C2.66694 11.5667 5.23394 14.1339 8.40002 14.134C11.5661 14.1339 14.1331 11.5667 14.1334 8.40063C14.1334 5.23431 11.5663 2.66741 8.40002 2.66724ZM10.4908 6.09497C10.7147 5.85079 11.0942 5.83421 11.3385 6.05786C11.5826 6.2818 11.5995 6.6613 11.3756 6.90552L7.89221 10.7053C7.78173 10.8258 7.62693 10.896 7.4635 10.8997C7.30007 10.9032 7.14169 10.8403 7.026 10.7249L5.44299 9.14087C5.20869 8.90657 5.20871 8.52655 5.44299 8.29224C5.6772 8.05849 6.05644 8.05849 6.29065 8.29224L7.4303 9.43188L10.4908 6.09497Z" fill="currentColor"/>
+        </svg>
+        At least 1 number
+      </p>
+
+      <p id="specialCharacters">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.40002 1.46704C12.229 1.46722 15.3336 4.57157 15.3336 8.40063C15.3333 12.2294 12.2289 15.3331 8.40002 15.3333C4.5712 15.3331 1.46772 12.2294 1.46741 8.40063C1.46741 4.57157 4.571 1.46722 8.40002 1.46704ZM8.40002 2.66724C5.23374 2.66741 2.66663 5.23431 2.66663 8.40063C2.66694 11.5667 5.23394 14.1339 8.40002 14.134C11.5661 14.1339 14.1331 11.5667 14.1334 8.40063C14.1334 5.23431 11.5663 2.66741 8.40002 2.66724ZM10.4908 6.09497C10.7147 5.85079 11.0942 5.83421 11.3385 6.05786C11.5826 6.2818 11.5995 6.6613 11.3756 6.90552L7.89221 10.7053C7.78173 10.8258 7.62693 10.896 7.4635 10.8997C7.30007 10.9032 7.14169 10.8403 7.026 10.7249L5.44299 9.14087C5.20869 8.90657 5.20871 8.52655 5.44299 8.29224C5.6772 8.05849 6.05644 8.05849 6.29065 8.29224L7.4303 9.43188L10.4908 6.09497Z" fill="currentColor"/>
+        </svg>
+        At least 1 special character
+      </p>
+    </div>
+  `;
+
+            inputElement.insertAdjacentHTML("afterend", rulesHtml);
+
+            // Optional: show it immediately on signup
+            const rulesEl = document.getElementById("password-rules");
+            if (rulesEl) rulesEl.style.display = "block";
+        }
 
 
         function replaceLockErrorsByField() {
