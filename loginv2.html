@@ -57,7 +57,7 @@
 
         .left {
 
-            flex: 1.05;
+            flex: 0.6;
             position: relative;
             overflow: hidden;
 
@@ -84,10 +84,7 @@
             position: absolute;
             inset: 0;
 
-            background: linear-gradient(to bottom,
-                    rgba(0, 0, 0, 0) 45%,
-                    rgba(0, 0, 0, 0.35) 70%,
-                    rgba(0, 0, 0, 0.75) 100%);
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
         }
 
 
@@ -108,7 +105,7 @@
 
         .left-logo {
 
-            height: 28px;
+            height: 40px;
             filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
         }
 
@@ -120,10 +117,10 @@
 
         .left-bottom h2 {
             font-family: 'Work Sans', sans-serif !important;
-            font-size: 40px;
-            font-weight: 700;
-            line-height: 1.05;
-
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 36px;
+            letter-spacing: -1px;
             margin-bottom: 12px;
 
             text-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
@@ -131,7 +128,9 @@
 
         .left-bottom p {
 
-            font-size: 16px;
+            font-size: 18px;
+            line-height: 28px;
+            letter-spacing: 0px;
             color: rgba(255, 255, 255, 0.88);
 
             text-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
@@ -176,10 +175,10 @@
 
         h1 {
             font-family: 'Work Sans', sans-serif !important;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 600;
             font-style: semibold;
-            line-height: 28.8px;
+            line-height: 28px;
             letter-spacing: -1px;
             color: var(--color-neutral-900);
         }
@@ -427,8 +426,10 @@
         #auth0-lock-error-msg-email,
         #auth0-lock-error-msg-password {
             color: #EF4444 !important;
-            font-size: 12px !important;
-            font-weight: 500 !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 20px !important;
+            letter-spacing: 0.5% !important;
             margin-top: 6px !important;
         }
 
@@ -474,7 +475,7 @@
             color: var(--color-neutral-500) !important;
             line-height: 20px !important;
             letter-spacing: 0.5% !important;
-            font-weight: 600 !important;
+            font-weight: 400 !important;
             margin: 20px 0 0 0 !important;
         }
 
@@ -486,36 +487,36 @@
 
         /*  Password validation */
 
-         #password-rules {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 8px !important;
-        margin-bottom: 12px !important;
-      }
+        #password-rules {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+            margin-bottom: 12px !important;
+        }
 
       #password-rules > p {
-        margin: 0px !important;
-        text-align: left !important;
-        font-size: 12px !important;
-        line-height: 16px !important;
-        letter-spacing: 1.5% !important;
-        color: #6c7273 !important;
-        display: flex !important;
-        gap: 4px !important;
-      }
+            margin: 0px !important;
+            text-align: left !important;
+            font-size: 12px !important;
+            line-height: 16px !important;
+            letter-spacing: 1.5% !important;
+            color: #6c7273 !important;
+            display: flex !important;
+            gap: 4px !important;
+        }
 
-      
-         #password-rules svg path {
-        fill: #6C7273;
-      }
 
-      #password-rules .valid svg path {
-        fill: #059669 !important;
-      }
+        #password-rules svg path {
+            fill: #6C7273;
+        }
 
-      #password-rules .valid {
-        color: #059669 !important;
-      }
+        #password-rules .valid svg path {
+            fill: #059669 !important;
+        }
+
+        #password-rules .valid {
+            color: #059669 !important;
+        }
 
 
         /* =========================================================
@@ -596,6 +597,29 @@
             justify-content: center;
             align-items: center;
             border-radius: 12px;
+        }
+
+        .auth0-loading {
+            width: 48px !important;
+            height: 48px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            background: conic-gradient(from 180deg at 50% 50%,
+                    #CC0600 0deg,
+                    #CC0600 63.24deg,
+                    rgba(255, 255, 255, 0) 360deg) !important;
+
+            animation: spin 1s linear infinite !important;
+
+            mask: radial-gradient(farthest-side, transparent 70%, black 71%) !important;
+            -webkit-mask: radial-gradient(farthest-side, transparent 70%, black 71%) !important;
+
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 
@@ -883,7 +907,6 @@
         // Sign up
         lock.on('signup ready', () => {
             const switchSignup = document.querySelector("#auth-switch");
-            console.log('switchSignup', switchSignup);
             switchSignup.style.setProperty('display', 'none', 'important');
             const inputElement = document.querySelector('.auth0-lock-input-block.auth0-lock-input-password');
             injectPasswordRulesAfterInput(inputElement);
@@ -906,6 +929,7 @@
         });
 
         window.addEventListener('load', () => {
+            console.log('Window loaded');
             // Just in case, we run it again on load to cover any last-minute renders
             addCustomLabels();
             replaceLockErrorsByField();
@@ -1101,7 +1125,10 @@
         }
 
         // 1) Each time Lock shows / changes view
-        lock.on('show', runLabelFixBurst);
+        lock.on('show', () => {
+            console.log('Lock shown, running label fix burst');
+            runLabelFixBurst();
+        });
 
         // 2) Observer: if Lock re-renders and removes labels, we put them back
         (function attachObserver() {
