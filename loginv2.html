@@ -246,6 +246,17 @@
             max-width: 100% !important;
         }
 
+                /* Hide Auth0 tabs immediately (no flash) */
+        .auth0-lock.auth0-lock .auth0-lock-tabs-container {
+        display: none !important;
+        }
+
+        /* Show tabs only when ready */
+        .lock-ready .auth0-lock.auth0-lock .auth0-lock-tabs-container {
+        display: flex !important;
+        }
+
+
         /* Tabs container must follow same width */
         .auth0-lock.auth0-lock .auth0-lock-tabs-container {
             width: 100% !important;
@@ -599,7 +610,12 @@
             border-radius: 12px;
         }
 
+        .auth0-loading-container{
+            height: 100px !important;
+        }
+
         .auth0-loading {
+            margin-top: 20px !important;
             width: 48px !important;
             height: 48px !important;
             border-radius: 50% !important;
@@ -903,6 +919,32 @@
             };
 
         }
+
+        function setLockReady() {
+  document.documentElement.classList.add("lock-ready");
+}
+
+lock.on("signin ready", setLockReady);
+lock.on("signup ready", setLockReady);
+lock.on("forgot_password ready", setLockReady);
+
+// Safety net: if the tab DOM appears before events, reveal once form exists
+(function watchTabs() {
+  const container = document.getElementById("lock-container");
+  if (!container) return;
+
+  const obs = new MutationObserver(() => {
+    const hasForm = container.querySelector(".auth0-lock-form");
+    const hasTabs = container.querySelector(".auth0-lock-tabs-container");
+    if (hasTabs && hasForm) {
+      setLockReady();
+      obs.disconnect();
+    }
+  });
+
+  obs.observe(container, { childList: true, subtree: true });
+})();
+
 
         // Sign up
         lock.on('signup ready', () => {
