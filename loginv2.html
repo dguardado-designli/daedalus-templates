@@ -246,14 +246,14 @@
             max-width: 100% !important;
         }
 
-                /* Hide Auth0 tabs immediately (no flash) */
+        /* Hide Auth0 tabs immediately (no flash) */
         .auth0-lock.auth0-lock .auth0-lock-tabs-container {
-        display: none !important;
+            display: none !important;
         }
 
         /* Show tabs only when ready */
         .lock-ready .auth0-lock.auth0-lock .auth0-lock-tabs-container {
-        display: flex !important;
+            display: flex !important;
         }
 
 
@@ -552,7 +552,7 @@
             }
         }
 
-         @media (max-width: 450px) {
+        @media (max-width: 450px) {
 
             .left {
 
@@ -736,6 +736,18 @@
             </div>
 
         </div>
+
+        <!-- Hidden SVG templates (inline in code) -->
+        <svg id="icon-email-error-template" xmlns="http://www.w3.org/2000/svg" width="14" height="13"
+            viewBox="0 0 32 26" style="display:none">
+            <path fill="#EF4444" d="M2 4h28v18H2z" />
+        </svg>
+
+        <svg id="icon-lock-error-template" xmlns="http://www.w3.org/2000/svg" width="15" height="18" viewBox="0 0 15 18"
+            style="display:none">
+            <path fill="#EF4444"
+                d="M7.08301 0C9.46463 0 11.3953 1.93092 11.3955 4.3125V5.74512C12.7382 6.11763 13.7581 7.27793 13.9482 8.68945C14.0658 9.56263 14.167 10.4865 14.167 11.4375C14.167 12.3885 14.0658 13.3124 13.9482 14.1855C13.7235 15.8545 12.34 17.1762 10.6328 17.2549C9.49969 17.307 8.34848 17.334 7.08301 17.334C5.81757 17.334 4.6663 17.307 3.5332 17.2549C1.82608 17.1762 0.443471 15.8544 0.21875 14.1855C0.101186 13.3123 0 12.3886 0 11.4375C2.29839e-05 10.4865 0.101184 9.56264 0.21875 8.68945C0.408969 7.2779 1.4279 6.11758 2.77051 5.74512V4.3125C2.77068 1.93092 4.70139 0 7.08301 0ZM7.08301 7.04199C5.83985 7.042 4.71201 7.06912 3.60254 7.12012C2.64439 7.16417 1.83656 7.91432 1.70508 8.88965C1.59029 9.74218 1.50002 10.5875 1.5 11.4375C1.5 12.2875 1.5903 13.1328 1.70508 13.9854C1.83644 14.9608 2.64429 15.7118 3.60254 15.7559C4.712 15.8069 5.83986 15.834 7.08301 15.834C8.32629 15.834 9.45488 15.8069 10.5645 15.7559C11.5224 15.7115 12.3296 14.9606 12.4609 13.9854C12.5757 13.1328 12.667 12.2875 12.667 11.4375C12.667 10.5875 12.5757 9.74216 12.4609 8.88965C12.3295 7.91456 11.5223 7.16447 10.5645 7.12012C9.45488 7.06911 8.32629 7.042 7.08301 7.04199ZM7.08301 9.89648C7.49722 9.89649 7.83301 10.2323 7.83301 10.6465V12.2295C7.83283 12.6436 7.49711 12.9795 7.08301 12.9795C6.6689 12.9795 6.33318 12.6436 6.33301 12.2295V10.6465C6.33301 10.2323 6.66879 9.89648 7.08301 9.89648ZM7.09375 9.17773H7.08301V9.16699H7.09375V9.17773ZM7.08301 1.5C5.52982 1.5 4.27068 2.75935 4.27051 4.3125V5.59082C5.16856 5.55854 6.09075 5.542 7.08301 5.54199C8.07541 5.542 8.99735 5.55853 9.89551 5.59082V4.3125C9.89533 2.75935 8.6362 1.5 7.08301 1.5Z" />
+        </svg>
 
 
     </div>
@@ -948,29 +960,29 @@
         }
 
         function setLockReady() {
-  document.documentElement.classList.add("lock-ready");
-}
+            document.documentElement.classList.add("lock-ready");
+        }
 
-lock.on("signin ready", setLockReady);
-lock.on("signup ready", setLockReady);
-lock.on("forgot_password ready", setLockReady);
+        lock.on("signin ready", setLockReady);
+        lock.on("signup ready", setLockReady);
+        lock.on("forgot_password ready", setLockReady);
 
-// Safety net: if the tab DOM appears before events, reveal once form exists
-(function watchTabs() {
-  const container = document.getElementById("lock-container");
-  if (!container) return;
+        // Safety net: if the tab DOM appears before events, reveal once form exists
+        (function watchTabs() {
+            const container = document.getElementById("lock-container");
+            if (!container) return;
 
-  const obs = new MutationObserver(() => {
-    const hasForm = container.querySelector(".auth0-lock-form");
-    const hasTabs = container.querySelector(".auth0-lock-tabs-container");
-    if (hasTabs && hasForm) {
-      setLockReady();
-      obs.disconnect();
-    }
-  });
+            const obs = new MutationObserver(() => {
+                const hasForm = container.querySelector(".auth0-lock-form");
+                const hasTabs = container.querySelector(".auth0-lock-tabs-container");
+                if (hasTabs && hasForm) {
+                    setLockReady();
+                    obs.disconnect();
+                }
+            });
 
-  obs.observe(container, { childList: true, subtree: true });
-})();
+            obs.observe(container, { childList: true, subtree: true });
+        })();
 
 
         // Sign up
@@ -1105,7 +1117,7 @@ lock.on("forgot_password ready", setLockReady);
                         "The password is required";
 
                 }
-
+             
             }
 
         }
