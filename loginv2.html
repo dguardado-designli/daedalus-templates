@@ -854,21 +854,14 @@ var config = JSON.parse(decodeURIComponent(escape(window.atob('@@config@@'))));
     } else if (typeof config.dict === 'string') {
       language = config.dict;
     }
+
+    console.log('Initializing Auth0 Lock with config:', config);
+    
       var urlParams = new URLSearchParams(window.location.search);
 
       var isSignUp = urlParams.get('screen') === 'signup';
 
       var initialScreen = isSignUp ? 'signUp' : 'login';
-
-      var callbackURL = config.callbackURL;
-      if (callbackURL && !callbackURL.includes('/api/auth/callback')) {
-        if (callbackURL.includes('/auth/callback')) {
-          callbackURL = callbackURL.replace(
-            '/auth/callback',
-            '/api/auth/callback',
-          );
-        }
-      }
 
       var lock = new Auth0Lock(config.clientID, config.auth0Domain, {
         password_policy: '{{password_policy}}',
