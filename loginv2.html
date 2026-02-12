@@ -1488,6 +1488,23 @@
         submitButton = document.querySelector(".auth0-lock-submit");
       });
 
+      lock.on("signin ready", makeTabsClickable);
+      lock.on("signup ready", makeTabsClickable);
+
+      function makeTabsClickable() {
+        const tabs = document.querySelectorAll('.auth0-lock-tabs li');
+        tabs.forEach(li => {
+        li.addEventListener('click', function (event) {
+          const clickableElement = li.querySelector('a, span');
+          if (!clickableElement) return;
+
+          if (event.target !== clickableElement) {
+            clickableElement.click();
+          }
+        });
+      });
+      }
+
       function injectPasswordRulesAfterInput(inputElement) {
         if (!inputElement) return;
         if (document.getElementById("password-rules")) return;
