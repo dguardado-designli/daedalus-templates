@@ -466,29 +466,6 @@
         display: none !important;
       }
 
-      /* =========================================================
-            Auth switch link
-        ========================================================= */
-
-      .auth-switch {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: center !important;
-        font-size: 14px !important;
-        color: var(--color-neutral-500) !important;
-        line-height: 20px !important;
-        letter-spacing: 0.5% !important;
-        font-weight: 400 !important;
-        margin: 20px 0 0 0 !important;
-      }
-
-      .auth-switch span {
-        color: var(--color-link-500);
-        text-decoration: none !important;
-        cursor: pointer !important;
-      }
-
       /*  Password validation */
 
       #password-rules {
@@ -744,6 +721,11 @@
       .signup-success-message svg {
         flex-shrink: 0;
       }
+
+      .auth0-label-submit{
+        text-transform: none !important;
+      }
+
     </style>
   </head>
 
@@ -770,7 +752,7 @@
       <div class="right">
         <div class="login_form">
           <div class="header_form">
-            <h1>Log in into your account</h1>
+            <h1>Log in to your account</h1>
 
             <p class="subtitle">Welcome back! Please enter your details</p>
           </div>
@@ -863,8 +845,6 @@
       } else if (typeof config.dict === "string") {
         language = config.dict;
       }
-
-      console.log("Initializing Auth0 Lock with config:", config);
 
       var urlParams = new URLSearchParams(window.location.search);
 
@@ -1252,11 +1232,13 @@
       // Sign up
       lock.on("signup ready", () => {
         submitButton.disabled = true;
-        const switchSignup = document.querySelector("#auth-switch");
-        switchSignup.style.setProperty("display", "none", "important");
         const inputElement = document.querySelector(
           ".auth0-lock-input-block.auth0-lock-input-password",
         );
+
+        const labelSubmit = document.querySelector(".auth0-label-submit");
+        labelSubmit.textContent = "Sign up";
+
         injectPasswordRulesAfterInput(inputElement);
         attachPasswordValidation();
         attachConfirmPassword();
@@ -1267,9 +1249,6 @@
         console.log("Signin ready");
         submitButton.disabled = false;
         const switchSignup = document.querySelector("#auth-switch");
-        switchSignup.innerHTML =
-          'Don’t have an account?<span href="">&nbsp;Register</span>';
-        switchSignup.style.setProperty("display", "flex", "important");
 
         if (switchSignup) {
           switchSignup.addEventListener("click", handleClick);
@@ -1386,7 +1365,7 @@
         const tabText = activeTab.textContent.trim();
 
         if (tabText === "Log In") {
-          title.textContent = "Log in into your account";
+          title.textContent = "Log in to your account";
           subtitle.textContent = "Welcome back! Please enter your details";
         } else if (tabText === "Sign Up") {
           title.textContent = "Create a new account";
@@ -1481,7 +1460,7 @@
               var newHeader = document.createElement("div");
               newHeader.className = "header_form";
               newHeader.innerHTML =
-                '<h1>Log in into your account</h1><p class="subtitle">Welcome back! Please enter your details</p>';
+                '<h1>Log in to your account</h1><p class="subtitle">Welcome back! Please enter your details</p>';
               loginForm.insertBefore(newHeader, loginForm.firstChild);
             }
           } else {
@@ -1563,7 +1542,7 @@
                   var newHeader = document.createElement("div");
                   newHeader.className = "header_form";
                   newHeader.innerHTML =
-                    '<h1>Log in into your account</h1><p class="subtitle">Welcome back! Please enter your details</p>';
+                    '<h1>Log in to your account</h1><p class="subtitle">Welcome back! Please enter your details</p>';
                   loginForm.insertBefore(newHeader, loginForm.firstChild);
                 }
               } else {
