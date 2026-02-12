@@ -909,7 +909,6 @@
         allowLogin: true,
         allowSignUp: true,
         loginAfterSignup: false,
-
         theme: {
           logo: "https://daeda-panel-frontend-ten.vercel.app/daedalus_logo.svg",
 
@@ -964,11 +963,6 @@
           errorContainer.classList.remove("show");
         }
       }
-
-      lock.on("signup submit", function () {
-        justSignedUp = true;
-        signupSuccessful = false;
-      });
 
       lock.on("signup success", function (profile) {
         console.log("Signup successful:", profile);
