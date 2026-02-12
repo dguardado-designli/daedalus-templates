@@ -1037,7 +1037,7 @@
         justSignedUp = true;
         signupSuccessful = true;
 
-        if (window.location.search.includes('screen=signup')) {
+      /*  if (window.location.search.includes('screen=signup')) {
           var newUrl =
             window.location.pathname +
             window.location.search.replace(/[?&]screen=signup/, '');
@@ -1045,7 +1045,7 @@
             newUrl = newUrl.slice(0, -1);
           }
           window.history.replaceState({}, '', newUrl);
-        }
+        } */
 
         var successMessage = document.createElement('div');
         successMessage.className = 'signup-success-message';
