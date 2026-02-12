@@ -43,7 +43,7 @@
 
       html,
       body {
-        font-family: 'Inter', sans-serif !important;
+        font-family: "Inter", sans-serif !important;
         height: 100%;
         background: var(--color-neutral-50);
       }
@@ -66,7 +66,7 @@
         position: relative;
         overflow: hidden;
 
-        background-image: url('https://daeda-panel-frontend-ten.vercel.app/Login_left.png');
+        background-image: url("https://daeda-panel-frontend-ten.vercel.app/Login_left.png");
         background-size: cover;
         background-position: center;
 
@@ -75,7 +75,7 @@
       }
 
       .left::before {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
 
@@ -83,7 +83,7 @@
       }
 
       .left::after {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
 
@@ -119,7 +119,7 @@
       }
 
       .left-bottom h2 {
-        font-family: 'Work Sans', sans-serif !important;
+        font-family: "Work Sans", sans-serif !important;
         font-size: 36px;
         font-weight: 600;
         line-height: 36px;
@@ -169,7 +169,7 @@
       }
 
       h1 {
-        font-family: 'Work Sans', sans-serif !important;
+        font-family: "Work Sans", sans-serif !important;
         font-size: 28px;
         font-weight: 600;
         font-style: semibold;
@@ -268,7 +268,7 @@
         ========================================================= */
 
       .auth0-lock.auth0-lock .auth0-lock-tabs-container {
-        font-family: 'Inter', sans-serif !important;
+        font-family: "Inter", sans-serif !important;
         padding: 0 !important;
         margin-bottom: 35px !important;
         display: flex;
@@ -355,7 +355,7 @@
       }
 
       .auth0-lock.auth0-lock .auth0-lock-input-email .auth0-lock-input-wrap {
-        background-image: url('https://daeda-panel-frontend-ten.vercel.app/email.svg') !important;
+        background-image: url("https://daeda-panel-frontend-ten.vercel.app/email.svg") !important;
         background-repeat: no-repeat;
         background-position: 14px center;
         background-size: 18px;
@@ -364,7 +364,7 @@
       }
 
       .auth0-lock.auth0-lock .auth0-lock-input-password .auth0-lock-input-wrap {
-        background-image: url('https://daeda-panel-frontend-ten.vercel.app/lock.svg') !important;
+        background-image: url("https://daeda-panel-frontend-ten.vercel.app/lock.svg") !important;
         background-repeat: no-repeat;
         background-position: 14px center;
         background-size: 18px;
@@ -432,12 +432,12 @@
       /* ================================
    Input text + placeholder (when described by an error msg)
 =================================== */
-      .auth0-lock.auth0-lock input[aria-describedby*='auth0-lock-error-msg'] {
+      .auth0-lock.auth0-lock input[aria-describedby*="auth0-lock-error-msg"] {
         color: #ef4444 !important;
       }
 
       .auth0-lock.auth0-lock
-        input[aria-describedby*='auth0-lock-error-msg']::placeholder {
+        input[aria-describedby*="auth0-lock-error-msg"]::placeholder {
         color: #ef4444 !important;
       }
 
@@ -448,7 +448,7 @@
       /* Modern browsers: border on wrapper */
       .auth0-lock.auth0-lock
         .auth0-lock-input-wrap:has(
-          input[aria-describedby*='auth0-lock-error-msg']
+          input[aria-describedby*="auth0-lock-error-msg"]
         ) {
         border: 1px solid #ef4444 !important;
       }
@@ -456,7 +456,7 @@
       /* Icon red (if icon SVG is inside same input wrap) */
       .auth0-lock.auth0-lock
         .auth0-lock-input-wrap:has(
-          input[aria-describedby*='auth0-lock-error-msg']
+          input[aria-describedby*="auth0-lock-error-msg"]
         )
         svg {
         fill: #ef4444 !important;
@@ -499,9 +499,15 @@
       }
 
       /*  Confirm Password */
-      .confirm-password-error {
-        color: #ef4444 !important;
-        font-size: 14px !important;
+      .confirmation-message-error {
+        background: #f04848;
+        color: white;
+        text-align: center;
+        padding: 6px 20px;
+        line-height: 1.6;
+        font-size: 12px;
+        transition: 0.2s;
+        margin-bottom: 16px;
         display: none;
       }
 
@@ -813,6 +819,17 @@
             <span class="error-text" id="custom-error-text"></span>
           </div>
 
+          <div
+            class="confirmation-message-error"
+            style="transition: 0.2s"
+            id="confirmation-message-error"
+          >
+            <span class="animated fadeInUp"
+              >Please ensure the password and the confirmation are the
+              same.</span
+            >
+          </div>
+
           <div class="header-form-forgot-password" style="display: none">
             <button
               id="forgot-password-back-btn"
@@ -930,7 +947,7 @@
 
     <script>
       var config = JSON.parse(
-        decodeURIComponent(escape(window.atob('@@config@@')))
+        decodeURIComponent(escape(window.atob("@@config@@"))),
       );
       config.extraParams = config.extraParams || {};
       var connection = config.connection;
@@ -940,24 +957,24 @@
 
       if (config.dict && config.dict.signin && config.dict.signin.title) {
         languageDictionary = { title: config.dict.signin.title };
-      } else if (typeof config.dict === 'string') {
+      } else if (typeof config.dict === "string") {
         language = config.dict;
       }
 
       var urlParams = new URLSearchParams(window.location.search);
 
-      var isSignUp = urlParams.get('screen') === 'signup';
+      var isSignUp = urlParams.get("screen") === "signup";
 
-      var initialScreen = isSignUp ? 'signUp' : 'login';
+      var initialScreen = isSignUp ? "signUp" : "login";
 
       var lock = new Auth0Lock(config.clientID, config.auth0Domain, {
-        password_policy: '{{password_policy}}',
-        password_complexity_options: '{{password_complexity_options}}',
+        password_policy: "{{password_policy}}",
+        password_complexity_options: "{{password_complexity_options}}",
         auth: {
           redirectUrl: config.callbackURL,
           responseType:
             (config.internalOptions || {}).response_type ||
-            (config.callbackOnLocationHash ? 'token' : 'code'),
+            (config.callbackOnLocationHash ? "token" : "code"),
           params: config.internalOptions,
         },
         configurationBaseUrl: config.clientConfigurationBaseUrl,
@@ -974,27 +991,27 @@
         loginAfterSignup: false,
 
         theme: {
-          logo: 'https://daeda-panel-frontend-ten.vercel.app/daedalus_logo.svg',
+          logo: "https://daeda-panel-frontend-ten.vercel.app/daedalus_logo.svg",
 
-          primaryColor: '#ff0000',
+          primaryColor: "#ff0000",
         },
         languageDictionary: {
-          title: 'Welcome to DaedaPanel',
-          description: 'Please enter your corresponding credentials',
-          emailInputPlaceholder: 'Type your email address',
-          passwordInputPlaceholder: 'Type your password',
-          emailInputHeader: 'EMAIL ADDRESS',
-          passwordInputHeader: 'PASSWORD',
-          forgotPasswordAction: 'Forgot password?',
-          forgotPasswordTitle: 'Forgot your password?',
+          title: "Welcome to DaedaPanel",
+          description: "Please enter your corresponding credentials",
+          emailInputPlaceholder: "Type your email address",
+          passwordInputPlaceholder: "Type your password",
+          emailInputHeader: "EMAIL ADDRESS",
+          passwordInputHeader: "PASSWORD",
+          forgotPasswordAction: "Forgot password?",
+          forgotPasswordTitle: "Forgot your password?",
           forgotPasswordInstructions:
             "We'll send you an email to reset your password if the email is registered in the system. If you still do not have an account in the system please contact an admin or support.",
-          forgotPasswordSubmitLabel: 'Send email',
-          loginSubmitLabel: 'Sign in',
-          blankErrorHint: 'Cannot be blank',
+          forgotPasswordSubmitLabel: "Send email",
+          loginSubmitLabel: "Sign in",
+          blankErrorHint: "Cannot be blank",
         },
 
-        container: 'lock-container',
+        container: "lock-container",
 
         closable: false,
       });
@@ -1004,15 +1021,16 @@
       var justSignedUp = false;
       var signupSuccessful = false;
       var lockAfterSignup = false;
-      var lockContainer = document.getElementById('lock-container');
+      var lockContainer = document.getElementById("lock-container");
       var submitButton;
+      var passwordIsValid = false;
 
       function showCustomError(message) {
-        var errorContainer = document.getElementById('custom-error-message');
-        var errorText = document.getElementById('custom-error-text');
+        var errorContainer = document.getElementById("custom-error-message");
+        var errorText = document.getElementById("custom-error-text");
         if (errorContainer && errorText) {
           errorText.textContent = message;
-          errorContainer.classList.add('show');
+          errorContainer.classList.add("show");
 
           setTimeout(function () {
             hideCustomError();
@@ -1021,23 +1039,23 @@
       }
 
       function hideCustomError() {
-        var errorContainer = document.getElementById('custom-error-message');
+        var errorContainer = document.getElementById("custom-error-message");
         if (errorContainer) {
-          errorContainer.classList.remove('show');
+          errorContainer.classList.remove("show");
         }
       }
 
-      lock.on('signup submit', function () {
+      lock.on("signup submit", function () {
         justSignedUp = true;
         signupSuccessful = false;
       });
 
-      lock.on('signup success', function (profile) {
-        console.log('Signup successful:', profile);
+      lock.on("signup success", function (profile) {
+        console.log("Signup successful:", profile);
         justSignedUp = true;
         signupSuccessful = true;
 
-      /*  if (window.location.search.includes('screen=signup')) {
+        /*  if (window.location.search.includes('screen=signup')) {
           var newUrl =
             window.location.pathname +
             window.location.search.replace(/[?&]screen=signup/, '');
@@ -1047,18 +1065,18 @@
           window.history.replaceState({}, '', newUrl);
         } */
 
-        var successMessage = document.createElement('div');
-        successMessage.className = 'signup-success-message';
-       /* successMessage.innerHTML = `
+        var successMessage = document.createElement("div");
+        successMessage.className = "signup-success-message";
+        /* successMessage.innerHTML = `
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0ZM10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2ZM13.5 6.5L14.5 7.5L9 13L5.5 9.5L6.5 8.5L9 11L13.5 6.5Z" fill="white"/>
           </svg>
           Your account has been created successfully. Please log in with your credentials.
         `; */
 
-        var headerForm = document.querySelector('.header_form');
+        var headerForm = document.querySelector(".header_form");
         if (headerForm) {
-          headerForm.insertAdjacentElement('afterend', successMessage);
+          headerForm.insertAdjacentElement("afterend", successMessage);
         }
 
         setTimeout(function () {
@@ -1067,8 +1085,8 @@
           lockAfterSignup = true;
 
           if (successMessage) {
-            successMessage.style.transition = 'opacity 300ms ease-out';
-            successMessage.style.opacity = '0';
+            successMessage.style.transition = "opacity 300ms ease-out";
+            successMessage.style.opacity = "0";
 
             setTimeout(function () {
               if (successMessage && successMessage.parentNode) {
@@ -1082,16 +1100,16 @@
           clickAttempts.forEach(function (delay) {
             setTimeout(function () {
               var currentTab = document.querySelector(
-                '.auth0-lock-tabs-current'
+                ".auth0-lock-tabs-current",
               );
               if (currentTab) {
                 var tabText = currentTab.textContent || currentTab.innerText;
-                if (tabText && !tabText.includes('Log In')) {
+                if (tabText && !tabText.includes("Log In")) {
                   var loginTab = document.querySelector(
-                    '.auth0-lock-tabs li:not(.auth0-lock-tabs-current) a'
+                    ".auth0-lock-tabs li:not(.auth0-lock-tabs-current) a",
                   );
                   if (loginTab) {
-                    console.log('Clicking login tab at ' + delay + 'ms');
+                    console.log("Clicking login tab at " + delay + "ms");
                     loginTab.click();
                   }
                 }
@@ -1105,26 +1123,26 @@
         }, 6000);
       });
 
-      lock.on('signup error', function (error) {
-        console.log('Signup error:', error);
+      lock.on("signup error", function (error) {
+        console.log("Signup error:", error);
         justSignedUp = false;
         signupSuccessful = false;
         submitButton.disabled = false;
 
         showCustomError(
-          "We couldn't complete your request. Please try again or use forgot password."
+          "We couldn't complete your request. Please try again or use forgot password.",
         );
       });
 
-      lock.on('unrecoverable_error', function (error) {
-        console.log('Unrecoverable error (suppressed):', error);
+      lock.on("unrecoverable_error", function (error) {
+        console.log("Unrecoverable error (suppressed):", error);
       });
 
-      lock.on('authorization_error', function (error) {
-        console.log('Authorization error:', error);
+      lock.on("authorization_error", function (error) {
+        console.log("Authorization error:", error);
 
         showCustomError(
-          "We couldn't complete your request. Please try again or use forgot password."
+          "We couldn't complete your request. Please try again or use forgot password.",
         );
       });
 
@@ -1138,12 +1156,12 @@
 
           expressions: [
             {
-              name: 'upperCase',
+              name: "upperCase",
 
               explain() {
                 return {
-                  message: 'upper case letters (A-Z)',
-                  code: 'upperCase',
+                  message: "upper case letters (A-Z)",
+                  code: "upperCase",
                 };
               },
 
@@ -1153,12 +1171,12 @@
             },
 
             {
-              name: 'lowerCase',
+              name: "lowerCase",
 
               explain() {
                 return {
-                  message: 'lower case letters (a-z)',
-                  code: 'lowerCase',
+                  message: "lower case letters (a-z)",
+                  code: "lowerCase",
                 };
               },
 
@@ -1168,12 +1186,12 @@
             },
 
             {
-              name: 'numbers',
+              name: "numbers",
 
               explain() {
                 return {
-                  message: 'numbers (i.e. 0-9)',
-                  code: 'numbers',
+                  message: "numbers (i.e. 0-9)",
+                  code: "numbers",
                 };
               },
 
@@ -1183,12 +1201,12 @@
             },
 
             {
-              name: 'specialCharacters',
+              name: "specialCharacters",
 
               explain() {
                 return {
-                  message: 'special characters (e.g. !@#$%^&*)',
-                  code: 'specialCharacters',
+                  message: "special characters (e.g. !@#$%^&*)",
+                  code: "specialCharacters",
                 };
               },
 
@@ -1202,52 +1220,52 @@
 
       function addEyeTogglesToAllPasswords() {
         const inputs = document.querySelectorAll(
-          'input.auth0-lock-input[type="password"]'
+          'input.auth0-lock-input[type="password"]',
         );
 
         inputs.forEach((input) => {
           if (input.dataset.eyeReady) return;
 
-          const wrap = input.closest('.auth0-lock-input-wrap');
+          const wrap = input.closest(".auth0-lock-input-wrap");
           if (!wrap) return;
 
-          if (wrap.querySelector('.password-eye-toggle')) return;
+          if (wrap.querySelector(".password-eye-toggle")) return;
 
           const openIcon = document
-            .getElementById('icon-eye-open')
+            .getElementById("icon-eye-open")
             ?.cloneNode(true);
           const closedIcon = document
-            .getElementById('icon-eye-closed')
+            .getElementById("icon-eye-closed")
             ?.cloneNode(true);
           if (!openIcon || !closedIcon) return;
 
-          openIcon.removeAttribute('id');
-          closedIcon.removeAttribute('id');
+          openIcon.removeAttribute("id");
+          closedIcon.removeAttribute("id");
 
-          openIcon.style.display = 'block';
-          closedIcon.style.display = 'none';
+          openIcon.style.display = "block";
+          closedIcon.style.display = "none";
 
-          openIcon.classList.add('password-eye-toggle');
-          closedIcon.classList.add('password-eye-toggle');
+          openIcon.classList.add("password-eye-toggle");
+          closedIcon.classList.add("password-eye-toggle");
 
-          wrap.style.position = 'relative';
+          wrap.style.position = "relative";
 
           wrap.appendChild(openIcon);
           wrap.appendChild(closedIcon);
 
           function toggle() {
-            const isHidden = input.type === 'password';
+            const isHidden = input.type === "password";
 
-            input.type = isHidden ? 'text' : 'password';
+            input.type = isHidden ? "text" : "password";
 
-            openIcon.style.display = isHidden ? 'none' : 'block';
-            closedIcon.style.display = isHidden ? 'block' : 'none';
+            openIcon.style.display = isHidden ? "none" : "block";
+            closedIcon.style.display = isHidden ? "block" : "none";
           }
 
-          openIcon.addEventListener('click', toggle);
-          closedIcon.addEventListener('click', toggle);
+          openIcon.addEventListener("click", toggle);
+          closedIcon.addEventListener("click", toggle);
 
-          input.dataset.eyeReady = 'true';
+          input.dataset.eyeReady = "true";
         });
       }
 
@@ -1261,32 +1279,33 @@
 
         if (!passwordInput) return;
 
-        passwordInput.addEventListener('input', () => {
+        passwordInput.addEventListener("input", () => {
           const value = passwordInput.value;
 
           if (policy?.length?.minLength) {
             document
-              .getElementById('minLength')
+              .getElementById("minLength")
               ?.classList.toggle(
-                'valid',
-                value.length >= policy.length.minLength
+                "valid",
+                value.length >= policy.length.minLength,
               );
           }
           let validCount = 0;
           expressions.forEach((exp) => {
-            const ruleId = exp?.explain?.()?.code || exp?.name || '';
+            const ruleId = exp?.explain?.()?.code || exp?.name || "";
             if (!ruleId) return;
 
             const ruleElement = document.getElementById(ruleId);
             if (!ruleElement) return;
 
             const match = exp.test(value);
-            ruleElement.classList.toggle('valid', match);
+            ruleElement.classList.toggle("valid", match);
             if (match) validCount++;
           });
           document
-            .getElementById('at-least-3-valid')
-            ?.classList.toggle('valid', validCount >= 3);
+            .getElementById("at-least-3-valid")
+            ?.classList.toggle("valid", validCount >= 3);
+          passwordIsValid = validCount >= 3;
         });
       }
 
@@ -1317,13 +1336,12 @@
                 />
               </div>
             </div>
-            <div class="auth0-lock-error-msg confirm-password-error">Passwords do not match</div>
           </div>`;
         const passwordFieldBlock = document.querySelector(
-          '.auth0-lock-input-show-password'
+          ".auth0-lock-input-show-password",
         );
         if (!passwordFieldBlock) return;
-        passwordFieldBlock.insertAdjacentHTML('afterend', confirmPasswordBlock);
+        passwordFieldBlock.insertAdjacentHTML("afterend", confirmPasswordBlock);
 
         addEyeTogglesToAllPasswords();
       }
@@ -1331,12 +1349,18 @@
       function validateSubmitStatus(
         emailInput,
         passwordInput,
-        confirmPasswordInput
+        confirmPasswordInput,
       ) {
         const emailValue = emailInput.value;
         const passwordValue = passwordInput.value;
         const confirmPasswordValue = confirmPasswordInput.value;
-        if (emailValue && passwordValue === confirmPasswordValue) {
+        if (
+          emailValue &&
+          passwordValue &&
+          confirmPasswordValue &&
+          passwordIsValid &&
+          passwordValue === confirmPasswordValue
+        ) {
           submitButton.disabled = false;
         } else {
           submitButton.disabled = true;
@@ -1346,79 +1370,81 @@
       function validatePasswordsMatch(
         emailInput,
         passwordInput,
-        confirmPasswordInput
+        confirmPasswordInput,
       ) {
         if (!passwordInput || !confirmPasswordInput) return;
 
-        const errorMessage = document.querySelector('.confirm-password-error');
+        const errorMessage = document.querySelector(
+          ".confirmation-message-error",
+        );
 
         const passwordValue = passwordInput.value;
         const confirmPasswordValue = confirmPasswordInput.value;
 
-        if (passwordValue === '' || confirmPasswordValue === '') {
-          errorMessage.style.display = 'none';
+        if (passwordValue === "" || confirmPasswordValue === "") {
+          errorMessage.style.display = "none";
           return;
         }
 
         if (passwordValue === confirmPasswordValue) {
-          errorMessage.style.display = 'none';
+          errorMessage.style.display = "none";
         } else {
-          errorMessage.style.display = 'block';
+          errorMessage.style.display = "block";
         }
         validateSubmitStatus(emailInput, passwordInput, confirmPasswordInput);
       }
 
       function addSubmitButtonValidations() {
         const emailInput = document.querySelector(
-          '.auth0-lock-input-block input[name="email"]'
+          '.auth0-lock-input-block input[name="email"]',
         );
         const passwordInput = document.querySelector(
-          '.auth0-lock-input-block input[name="password"]'
+          '.auth0-lock-input-block input[name="password"]',
         );
         const confirmPasswordInput = document.querySelector(
-          '.confirm-password-input'
+          ".confirm-password-input",
         );
 
-        emailInput.addEventListener('input', () =>
-          validateSubmitStatus(emailInput, passwordInput, confirmPasswordInput)
+        emailInput.addEventListener("input", () =>
+          validateSubmitStatus(emailInput, passwordInput, confirmPasswordInput),
         );
-        passwordInput.addEventListener('input', () =>
+        passwordInput.addEventListener("input", () =>
           validatePasswordsMatch(
             emailInput,
             passwordInput,
-            confirmPasswordInput
-          )
+            confirmPasswordInput,
+          ),
         );
-        confirmPasswordInput.addEventListener('input', () =>
+        confirmPasswordInput.addEventListener("input", () =>
           validatePasswordsMatch(
             emailInput,
             passwordInput,
-            confirmPasswordInput
-          )
+            confirmPasswordInput,
+          ),
         );
       }
 
       function handleChange(event) {
-        console.log('Input v alue changed:', event.target.value);
+        console.log("Input v alue changed:", event.target.value);
       }
 
       function setLockReady() {
-        document.documentElement.classList.add('lock-ready');
+        document.documentElement.classList.add("lock-ready");
         addEyeTogglesToAllPasswords();
       }
 
-      lock.on('signin ready', setLockReady);
-      lock.on('signup ready', setLockReady);
-      lock.on('forgot_password ready', setLockReady);
+      lock.on("signin ready", setLockReady);
+      lock.on("signup ready", setLockReady);
+      lock.on("forgot_password ready", setLockReady);
 
       // Safety net: if the tab DOM appears before events, reveal once form exists
       (function watchTabs() {
-        const container = document.getElementById('lock-container');
+        const container = document.getElementById("lock-container");
         if (!container) return;
 
         const obs = new MutationObserver(() => {
-          const hasForm = container.querySelector('.auth0-lock-form');
-          const hasTabs = container.querySelector('.auth0-lock-tabs-container');
+          const hasForm = container.querySelector(".auth0-lock-form");
+          const hasTabs = container.querySelector(".auth0-lock-tabs-container");
           if (hasTabs && hasForm) {
             setLockReady();
             obs.disconnect();
@@ -1429,14 +1455,14 @@
       })();
 
       // Sign up
-      lock.on('signup ready', () => {
+      lock.on("signup ready", () => {
         submitButton.disabled = true;
         const inputElement = document.querySelector(
-          '.auth0-lock-input-block.auth0-lock-input-password'
+          ".auth0-lock-input-block.auth0-lock-input-password",
         );
 
-        const labelSubmit = document.querySelector('.auth0-label-submit');
-        labelSubmit.textContent = 'Sign up';
+        const labelSubmit = document.querySelector(".auth0-label-submit");
+        labelSubmit.textContent = "Sign up";
 
         injectPasswordRulesAfterInput(inputElement);
         attachPasswordValidation();
@@ -1445,26 +1471,26 @@
       });
 
       // Login / Sign in
-      lock.on('signin ready', () => {
-        console.log('Signin ready');
+      lock.on("signin ready", () => {
+        console.log("Signin ready");
         submitButton.disabled = false;
 
-        const labelSubmit = document.querySelector('.auth0-label-submit');
-        labelSubmit.textContent = 'Log in';
+        const labelSubmit = document.querySelector(".auth0-label-submit");
+        labelSubmit.textContent = "Log in";
       });
 
-      window.addEventListener('load', () => {
-        console.log('Window loaded');
+      window.addEventListener("load", () => {
+        console.log("Window loaded");
         addCustomLabels();
         replaceLockErrorsByField();
         updateHeaderFormText();
         attachPasswordValidation();
-        submitButton = document.querySelector('.auth0-lock-submit');
+        submitButton = document.querySelector(".auth0-lock-submit");
       });
 
       function injectPasswordRulesAfterInput(inputElement) {
         if (!inputElement) return;
-        if (document.getElementById('password-rules')) return;
+        if (document.getElementById("password-rules")) return;
 
         const rulesHtml = `
     <div id="password-rules" style="display: none">
@@ -1509,93 +1535,93 @@
     </div>
   `;
 
-        inputElement.insertAdjacentHTML('afterend', rulesHtml);
+        inputElement.insertAdjacentHTML("afterend", rulesHtml);
 
         // Optional: show it immediately on signup
-        const rulesEl = document.getElementById('password-rules');
-        if (rulesEl) rulesEl.style.display = 'block';
+        const rulesEl = document.getElementById("password-rules");
+        if (rulesEl) rulesEl.style.display = "block";
       }
 
       function replaceLockErrorsByField() {
         const emailError = document.getElementById(
-          'auth0-lock-error-msg-email'
+          "auth0-lock-error-msg-email",
         );
 
         if (emailError) {
           const original = emailError.textContent.trim();
 
-          if (original === 'Cannot be blank') {
-            emailError.textContent = 'The email is required';
+          if (original === "Cannot be blank") {
+            emailError.textContent = "The email is required";
           }
 
-          if (original === 'Email is invalid') {
-            emailError.textContent = 'The email you entered is invalid';
+          if (original === "Email is invalid") {
+            emailError.textContent = "The email you entered is invalid";
           }
         }
 
         const passwordError = document.getElementById(
-          'auth0-lock-error-msg-password'
+          "auth0-lock-error-msg-password",
         );
 
         if (passwordError) {
           const original = passwordError.textContent.trim();
 
-          if (original === 'Cannot be blank') {
-            passwordError.textContent = 'The password is required';
+          if (original === "Cannot be blank") {
+            passwordError.textContent = "The password is required";
           }
         }
       }
 
       function updateHeaderFormText() {
-        const header = document.querySelector('.header_form');
+        const header = document.querySelector(".header_form");
 
         if (!header) return;
 
-        const title = header.querySelector('h1');
-        const subtitle = header.querySelector('.subtitle');
+        const title = header.querySelector("h1");
+        const subtitle = header.querySelector(".subtitle");
 
         if (!title || !subtitle) return;
 
-        const activeTab = document.querySelector('.auth0-lock-tabs-current');
+        const activeTab = document.querySelector(".auth0-lock-tabs-current");
 
         if (!activeTab) return;
 
         const tabText = activeTab.textContent.trim();
 
-        if (tabText === 'Log In') {
-          title.textContent = 'Log in to your account';
-          subtitle.textContent = 'Welcome back! Please enter your details';
-        } else if (tabText === 'Sign Up') {
-          title.textContent = 'Create a new account';
-          subtitle.textContent = 'Welcome! Please register your new account';
+        if (tabText === "Log In") {
+          title.textContent = "Log in to your account";
+          subtitle.textContent = "Welcome back! Please enter your details";
+        } else if (tabText === "Sign Up") {
+          title.textContent = "Create a new account";
+          subtitle.textContent = "Welcome! Please register your new account";
         }
       }
 
       function addCustomLabels() {
         var emailBlock = document.querySelector(
-          'div.auth0-lock-input-block.auth0-lock-input-email'
+          "div.auth0-lock-input-block.auth0-lock-input-email",
         );
 
         if (emailBlock) {
-          if (!emailBlock.querySelector(':scope > .auth0-lock-input-label')) {
-            var emailLabel = document.createElement('div');
-            emailLabel.className = 'auth0-lock-input-label';
-            emailLabel.textContent = 'EMAIL ADDRESS';
+          if (!emailBlock.querySelector(":scope > .auth0-lock-input-label")) {
+            var emailLabel = document.createElement("div");
+            emailLabel.className = "auth0-lock-input-label";
+            emailLabel.textContent = "EMAIL ADDRESS";
             emailBlock.insertBefore(emailLabel, emailBlock.firstChild);
           }
         }
 
         var passwordBlock = document.querySelector(
-          'div.auth0-lock-input-block.auth0-lock-input-password'
+          "div.auth0-lock-input-block.auth0-lock-input-password",
         );
 
         if (passwordBlock) {
           if (
-            !passwordBlock.querySelector(':scope > .auth0-lock-input-label')
+            !passwordBlock.querySelector(":scope > .auth0-lock-input-label")
           ) {
-            var passwordLabel = document.createElement('div');
-            passwordLabel.className = 'auth0-lock-input-label';
-            passwordLabel.textContent = 'PASSWORD';
+            var passwordLabel = document.createElement("div");
+            passwordLabel.className = "auth0-lock-input-label";
+            passwordLabel.textContent = "PASSWORD";
             passwordBlock.insertBefore(passwordLabel, passwordBlock.firstChild);
           }
         }
@@ -1607,15 +1633,15 @@
         updateHeaderFormText();
       }
 
-      lock.on('show', () => {
-        console.log('Lock shown, running label fix burst');
+      lock.on("show", () => {
+        console.log("Lock shown, running label fix burst");
         if (!lockAfterSignup) {
           runLabelFixBurst();
         }
       });
 
       (function attachObserver() {
-        var container = document.getElementById('lock-container');
+        var container = document.getElementById("lock-container");
         if (!container) return;
 
         var observer = new MutationObserver(function () {
@@ -1636,72 +1662,72 @@
 
       let formSubmitted = false;
 
-      document.addEventListener('click', function (e) {
+      document.addEventListener("click", function (e) {
         var target = e.target;
-        var backBtn = target.closest('#forgot-password-back-btn');
+        var backBtn = target.closest("#forgot-password-back-btn");
         if (backBtn) {
           e.preventDefault();
           e.stopPropagation();
-          console.log('Back button clicked via delegation');
+          console.log("Back button clicked via delegation");
 
           var forgotHeader = document.querySelector(
-            '.header-form-forgot-password'
+            ".header-form-forgot-password",
           );
           if (forgotHeader) {
-            forgotHeader.style.display = 'none';
+            forgotHeader.style.display = "none";
           }
 
-          var loginHeader = document.querySelector('.header_form');
+          var loginHeader = document.querySelector(".header_form");
           if (!loginHeader) {
-            var loginForm = document.querySelector('.login_form');
+            var loginForm = document.querySelector(".login_form");
             if (loginForm) {
-              var newHeader = document.createElement('div');
-              newHeader.className = 'header_form';
+              var newHeader = document.createElement("div");
+              newHeader.className = "header_form";
               newHeader.innerHTML =
                 '<h1>Log in to your account</h1><p class="subtitle">Welcome back! Please enter your details</p>';
               loginForm.insertBefore(newHeader, loginForm.firstChild);
             }
           } else {
-            loginHeader.style.display = 'block';
+            loginHeader.style.display = "block";
           }
 
           lock.hide();
           setTimeout(function () {
-            lock.show({ initialScreen: 'login' });
+            lock.show({ initialScreen: "login" });
           }, 100);
         }
       });
 
-      lock.on('forgot_password ready', () => {
+      lock.on("forgot_password ready", () => {
         setTimeout(function () {
-          const formHeader = document.querySelector('.header_form');
+          const formHeader = document.querySelector(".header_form");
           const formHeaderForgotPassword = document.querySelector(
-            '.header-form-forgot-password'
+            ".header-form-forgot-password",
           );
           const paragraph = document.querySelector(
-            '.auth0-lock-form > div > p'
+            ".auth0-lock-form > div > p",
           );
           const input = document.querySelector(
-            '.auth0-lock-input-block.auth0-lock-input-email'
+            ".auth0-lock-input-block.auth0-lock-input-email",
           );
-          const switchEl = document.getElementById('auth-switch');
+          const switchEl = document.getElementById("auth-switch");
           const btn = document.querySelector(
-            '.auth0-lock.auth0-lock .auth0-lock-submit span'
+            ".auth0-lock.auth0-lock .auth0-lock-submit span",
           );
           if (btn) {
-            btn.textContent = 'Send Email';
-            btn.style.textTransform = 'none';
+            btn.textContent = "Send Email";
+            btn.style.textTransform = "none";
           }
 
           const spanText = document.querySelector(
-            '.auth0-lock-form > div > p > span'
+            ".auth0-lock-form > div > p > span",
           );
           if (spanText) {
-            spanText.style.display = 'none';
+            spanText.style.display = "none";
           }
 
           if (formHeaderForgotPassword) {
-            formHeaderForgotPassword.style.display = 'block';
+            formHeaderForgotPassword.style.display = "block";
           }
 
           if (switchEl) {
@@ -1715,90 +1741,90 @@
             paragraph.remove();
           }
           if (input) {
-            input.style.marginBottom = '32px';
-            input.classList.add('forgot-password-input-email');
+            input.style.marginBottom = "32px";
+            input.classList.add("forgot-password-input-email");
           }
-          var backBtn = document.getElementById('forgot-password-back-btn');
+          var backBtn = document.getElementById("forgot-password-back-btn");
           if (backBtn) {
-            console.log('Back button found, attaching direct handler');
+            console.log("Back button found, attaching direct handler");
             backBtn.onclick = function (e) {
               e.preventDefault();
               e.stopPropagation();
-              console.log('Back button clicked (direct handler)');
+              console.log("Back button clicked (direct handler)");
 
               var forgotHeader = document.querySelector(
-                '.header-form-forgot-password'
+                ".header-form-forgot-password",
               );
               if (forgotHeader) {
-                forgotHeader.style.display = 'none';
+                forgotHeader.style.display = "none";
               }
 
-              var loginHeader = document.querySelector('.header_form');
+              var loginHeader = document.querySelector(".header_form");
               if (!loginHeader) {
-                var loginForm = document.querySelector('.login_form');
+                var loginForm = document.querySelector(".login_form");
                 if (loginForm) {
-                  var newHeader = document.createElement('div');
-                  newHeader.className = 'header_form';
+                  var newHeader = document.createElement("div");
+                  newHeader.className = "header_form";
                   newHeader.innerHTML =
                     '<h1>Log in to your account</h1><p class="subtitle">Welcome back! Please enter your details</p>';
                   loginForm.insertBefore(newHeader, loginForm.firstChild);
                 }
               } else {
-                loginHeader.style.display = 'block';
+                loginHeader.style.display = "block";
               }
 
               lock.hide();
               setTimeout(function () {
-                lock.show({ initialScreen: 'login' });
+                lock.show({ initialScreen: "login" });
               }, 100);
 
               return false;
             };
           } else {
-            console.log('Back button NOT found');
+            console.log("Back button NOT found");
           }
         }, 200);
       });
 
-      lock.on('forgot_password submit', () => {
+      lock.on("forgot_password submit", () => {
         formSubmitted = true;
       });
 
       const observer = new MutationObserver(() => {
         const confirmation = document.querySelector(
-          '.auth0-global-message.auth0-global-message-success'
+          ".auth0-global-message.auth0-global-message-success",
         );
 
         if (confirmation && formSubmitted) {
-          const formBox = document.querySelector('.lock-container-panel');
-          const backBtn = document.getElementById('forgot-password-back-btn');
+          const formBox = document.querySelector(".lock-container-panel");
+          const backBtn = document.getElementById("forgot-password-back-btn");
           if (backBtn) {
-            backBtn.style.display = 'none';
+            backBtn.style.display = "none";
           }
 
-          if (formBox) formBox.classList.add('forgot-password-success');
+          if (formBox) formBox.classList.add("forgot-password-success");
           const redirectContainer = document.querySelector(
-            '.password-set-successfully-bottom'
+            ".password-set-successfully-bottom",
           );
-          if (redirectContainer) redirectContainer.style.display = 'flex';
+          if (redirectContainer) redirectContainer.style.display = "flex";
 
-          const redirectLink = document.getElementById('go-back-login-btn');
+          const redirectLink = document.getElementById("go-back-login-btn");
           if (redirectLink) {
-            const link = config.callbackURL || '/';
-            const cleanLink = link.replace('/auth/callback', '');
-            redirectLink.style.display = 'flex';
+            const link = config.callbackURL || "/";
+            const cleanLink = link.replace("/auth/callback", "");
+            redirectLink.style.display = "flex";
             redirectLink.href = cleanLink;
           }
           const formHeader = document.querySelector(
-            '.header-form-forgot-password'
+            ".header-form-forgot-password",
           );
           if (formHeader) {
-            const title = formHeader.querySelector('h1');
-            const subtitle = formHeader.querySelector('.subtitle');
-            if (title) title.textContent = 'We’ve sent you an email';
+            const title = formHeader.querySelector("h1");
+            const subtitle = formHeader.querySelector(".subtitle");
+            if (title) title.textContent = "We’ve sent you an email";
             if (subtitle)
               subtitle.textContent =
-                'Check your inbox for password reset instructions.';
+                "Check your inbox for password reset instructions.";
           }
 
           observer.disconnect();
