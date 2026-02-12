@@ -677,6 +677,33 @@
         display: none !important;
       }
 
+      /* Custom error message */
+      .custom-error-message {
+        display: none;
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        color: #991b1b;
+        font-size: 14px;
+        line-height: 20px;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .custom-error-message.show {
+        display: flex;
+      }
+
+      .custom-error-message svg {
+        flex-shrink: 0;
+      }
+
+      .custom-error-message .error-text {
+        flex: 1;
+      }
+
       /* Prevent signup button from growing */
       .auth0-lock-submit {
         min-height: 40px !important;
@@ -756,6 +783,14 @@
 
             <p class="subtitle">Welcome back! Please enter your details</p>
           </div>
+          
+          <div id="custom-error-message" class="custom-error-message">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0ZM10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2ZM10 13C10.5523 13 11 13.4477 11 14C11 14.5523 10.5523 15 10 15C9.44772 15 9 14.5523 9 14C9 13.4477 9.44772 13 10 13ZM10 5C10.5523 5 11 5.44772 11 6V11C11 11.5523 10.5523 12 10 12C9.44772 12 9 11.5523 9 11V6C9 5.44772 9.44772 5 10 5Z" fill="#991b1b"/>
+            </svg>
+            <span class="error-text" id="custom-error-text"></span>
+          </div>
+          
           <div class="header-form-forgot-password" style="display: none">
             <button
               id="forgot-password-back-btn"
@@ -910,6 +945,26 @@
       var lockContainer = document.getElementById("lock-container");
       var submitButton;
 
+      function showCustomError(message) {
+        var errorContainer = document.getElementById("custom-error-message");
+        var errorText = document.getElementById("custom-error-text");
+        if (errorContainer && errorText) {
+          errorText.textContent = message;
+          errorContainer.classList.add("show");
+          
+          setTimeout(function() {
+            hideCustomError();
+          }, 5000);
+        }
+      }
+
+      function hideCustomError() {
+        var errorContainer = document.getElementById("custom-error-message");
+        if (errorContainer) {
+          errorContainer.classList.remove("show");
+        }
+      }
+
       lock.on("signup submit", function () {
         justSignedUp = true;
         signupSuccessful = false;
@@ -993,10 +1048,34 @@
         justSignedUp = false;
         signupSuccessful = false;
         submitButton.disabled = false;
+        
+        var errorMessage = "An error occurred during signup. Please try again.";
+        if (error && error.description) {
+          errorMessage = error.description;
+        } else if (error && error.error_description) {
+          errorMessage = error.error_description;
+        }
+        
+        showCustomError(errorMessage);
       });
 
       lock.on("unrecoverable_error", function (error) {
         console.log("Unrecoverable error (suppressed):", error);
+      });
+      
+      lock.on("authorization_error", function (error) {
+        console.log("Authorization error:", error);
+        
+        var errorMessage = "Login failed. Please check your credentials and try again.";
+        if (error && error.error_description) {
+          if (error.error_description.includes("Wrong")) {
+            errorMessage = "Incorrect email or password. Please try again.";
+          } else {
+            errorMessage = error.error_description;
+          }
+        }
+        
+        showCustomError(errorMessage);
       });
 
       const passwordPolicy = {
@@ -1195,15 +1274,6 @@
         console.log("Input v alue changed:", event.target.value);
       }
 
-      function handleClick(event) {
-        const activeTab = document.querySelector(
-          ".auth0-lock-tabs li:not(.auth0-lock-tabs-current) a",
-        );
-        if (activeTab) {
-          activeTab.click();
-        }
-      }
-
       function setLockReady() {
         document.documentElement.classList.add("lock-ready");
       }
@@ -1248,11 +1318,10 @@
       lock.on("signin ready", () => {
         console.log("Signin ready");
         submitButton.disabled = false;
-        const switchSignup = document.querySelector("#auth-switch");
+        
+        const labelSubmit = document.querySelector(".auth0-label-submit");
+        labelSubmit.textContent = "Log in";
 
-        if (switchSignup) {
-          switchSignup.addEventListener("click", handleClick);
-        }
       });
 
       window.addEventListener("load", () => {
