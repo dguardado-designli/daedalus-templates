@@ -1049,14 +1049,7 @@
         signupSuccessful = false;
         submitButton.disabled = false;
         
-        var errorMessage = "An error occurred during signup. Please try again.";
-        if (error && error.description) {
-          errorMessage = error.description;
-        } else if (error && error.error_description) {
-          errorMessage = error.error_description;
-        }
-        
-        showCustomError(errorMessage);
+        showCustomError("We couldn't complete your request. Please try again or use forgot password.");
       });
 
       lock.on("unrecoverable_error", function (error) {
@@ -1066,16 +1059,7 @@
       lock.on("authorization_error", function (error) {
         console.log("Authorization error:", error);
         
-        var errorMessage = "Login failed. Please check your credentials and try again.";
-        if (error && error.error_description) {
-          if (error.error_description.includes("Wrong")) {
-            errorMessage = "Incorrect email or password. Please try again.";
-          } else {
-            errorMessage = error.error_description;
-          }
-        }
-        
-        showCustomError(errorMessage);
+        showCustomError("We couldn't complete your request. Please try again or use forgot password.");
       });
 
       const passwordPolicy = {
