@@ -946,6 +946,16 @@
     <script src="https://cdn.auth0.com/js/lock/14.2.3/lock.min.js"></script>
 
     <script>
+      console.log("AUTH0 TEMPLATE VERSION: 2026-02-13_1");
+
+window.addEventListener("error", (e) => {
+  console.log("TEMPLATE JS ERROR:", e.message, e.filename, e.lineno, e.colno);
+});
+
+window.addEventListener("unhandledrejection", (e) => {
+  console.log("TEMPLATE UNHANDLED REJECTION:", e.reason);
+});
+
       var config = JSON.parse(
         decodeURIComponent(escape(window.atob("@@config@@"))),
       );
