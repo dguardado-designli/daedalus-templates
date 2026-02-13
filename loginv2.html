@@ -1354,17 +1354,14 @@
         const emailValue = emailInput.value;
         const passwordValue = passwordInput.value;
         const confirmPasswordValue = confirmPasswordInput.value;
-        if (
+        submitButton.disabled = !(
           emailValue &&
           passwordValue &&
+          passwordValue.length >= passwordPolicy.length.minLength &&
           confirmPasswordValue &&
           passwordIsValid &&
           passwordValue === confirmPasswordValue
-        ) {
-          submitButton.disabled = false;
-        } else {
-          submitButton.disabled = true;
-        }
+        );
       }
 
       function validatePasswordsMatch(
@@ -1372,6 +1369,7 @@
         passwordInput,
         confirmPasswordInput,
       ) {
+        validateSubmitStatus(emailInput, passwordInput, confirmPasswordInput);
         if (!passwordInput || !confirmPasswordInput) return;
 
         const errorMessage = document.querySelector(
@@ -1381,7 +1379,12 @@
         const passwordValue = passwordInput.value;
         const confirmPasswordValue = confirmPasswordInput.value;
 
-        if (passwordValue === "" || confirmPasswordValue === "") {
+        if (
+          passwordValue === "" ||
+          confirmPasswordValue === "" ||
+          passwordValue.length < passwordPolicy.length.minLength ||
+          !passwordIsValid
+        ) {
           errorMessage.style.display = "none";
           return;
         }
@@ -1391,7 +1394,6 @@
         } else {
           errorMessage.style.display = "block";
         }
-        validateSubmitStatus(emailInput, passwordInput, confirmPasswordInput);
       }
 
       function addSubmitButtonValidations() {
@@ -1492,17 +1494,17 @@
       lock.on("signup ready", makeTabsClickable);
 
       function makeTabsClickable() {
-        const tabs = document.querySelectorAll('.auth0-lock-tabs li');
-        tabs.forEach(li => {
-        li.addEventListener('click', function (event) {
-          const clickableElement = li.querySelector('a, span');
-          if (!clickableElement) return;
+        const tabs = document.querySelectorAll(".auth0-lock-tabs li");
+        tabs.forEach((li) => {
+          li.addEventListener("click", function (event) {
+            const clickableElement = li.querySelector("a, span");
+            if (!clickableElement) return;
 
-          if (event.target !== clickableElement) {
-            clickableElement.click();
-          }
+            if (event.target !== clickableElement) {
+              clickableElement.click();
+            }
+          });
         });
-      });
       }
 
       function injectPasswordRulesAfterInput(inputElement) {
