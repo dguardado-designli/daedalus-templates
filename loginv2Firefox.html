@@ -48,18 +48,10 @@
         background: var(--color-neutral-50);
       }
 
-      /* =========================================================
-           LAYOUT
-        ========================================================= */
-
       .page {
         min-height: 100vh;
         display: flex;
       }
-
-      /* =========================================================
-           LEFT PANEL
-        ========================================================= */
 
       .left {
         flex: 0.6;
@@ -138,10 +130,6 @@
         text-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
       }
 
-      /* =========================================================
-           RIGHT PANEL
-        ========================================================= */
-
       .right {
         flex: 1;
 
@@ -194,10 +182,6 @@
         margin-top: 16px !important;
       }
 
-      /* =========================================================
-           AUTH0 LOCK BASE OVERRIDES
-        ========================================================= */
-
       .auth0-lock.auth0-lock * {
         font-family: inherit !important;
       }
@@ -210,16 +194,10 @@
         display: none !important;
       }
 
-      /* =========================================================
-   FORCE AUTH0 LOCK TO MATCH FORM WIDTH
-========================================================= */
-
-      /* Lock main container must respect parent width */
       #lock-container {
         width: 100% !important;
       }
 
-      /* Lock widget must not overflow form */
       .auth0-lock.auth0-lock {
         width: 100% !important;
         max-width: 100% !important;
@@ -236,36 +214,27 @@
         max-width: 100% !important;
       }
 
-      /* Hide Auth0 tabs immediately (no flash) */
       .auth0-lock.auth0-lock .auth0-lock-tabs-container {
         display: none !important;
       }
 
-      /* Show tabs only when ready */
       .lock-ready .auth0-lock.auth0-lock .auth0-lock-tabs-container {
         display: flex !important;
       }
 
-      /* Tabs container must follow same width */
       .auth0-lock.auth0-lock .auth0-lock-tabs-container {
         width: 100% !important;
       }
 
-      /* Tabs must respect parent width */
       .auth0-lock.auth0-lock .auth0-lock-tabs {
         width: 100% !important;
         max-width: 100% !important;
       }
 
-      /* Ensure form itself matches tabs width */
       .auth0-lock.auth0-lock .auth0-lock-form {
         width: 100% !important;
         max-width: 100% !important;
       }
-
-      /* =========================================================
-           AUTH0 LOCK TABS (SEGMENTED CONTROL)
-        ========================================================= */
 
       .auth0-lock.auth0-lock .auth0-lock-tabs-container {
         font-family: "Inter", sans-serif !important;
@@ -324,10 +293,6 @@
         padding: 0px !important;
       }
 
-      /* =========================================================
-           INPUTS
-        ========================================================= */
-
       .auth0-lock.auth0-lock .auth0-lock-input-wrap {
         border-radius: 12px !important;
         background-color: var(--color-neutral-0) !important;
@@ -374,11 +339,8 @@
 
       .auth0-lock.auth0-lock .auth0-lock-submit {
         background: var(--color-primary-500) !important;
-
         border-radius: 12px !important;
-
         padding: 0 !important;
-
         margin-top: 20px !important;
       }
 
@@ -416,9 +378,6 @@
         text-transform: uppercase !important;
       }
 
-      /* ================================
-   Error message (Auth0 uses IDs)
-=================================== */
       #auth0-lock-error-msg-email,
       #auth0-lock-error-msg-password {
         color: #ef4444 !important;
@@ -429,9 +388,6 @@
         margin-top: 6px !important;
       }
 
-      /* ================================
-   Input text + placeholder (when described by an error msg)
-=================================== */
       .auth0-lock.auth0-lock input[aria-describedby*="auth0-lock-error-msg"] {
         color: #ef4444 !important;
       }
@@ -441,11 +397,7 @@
         color: #ef4444 !important;
       }
 
-      /* ================================
-   Border and icon color (when described by an error msg)
-=================================== */
-
-      /* Modern browsers: border on wrapper */
+      /* OJO: :has() puede variar por versión; no rompe, solo puede no aplicar */
       .auth0-lock.auth0-lock
         .auth0-lock-input-wrap:has(
           input[aria-describedby*="auth0-lock-error-msg"]
@@ -453,7 +405,6 @@
         border: 1px solid #ef4444 !important;
       }
 
-      /* Icon red (if icon SVG is inside same input wrap) */
       .auth0-lock.auth0-lock
         .auth0-lock-input-wrap:has(
           input[aria-describedby*="auth0-lock-error-msg"]
@@ -465,8 +416,6 @@
       .auth0-lock-terms {
         display: none !important;
       }
-
-      /*  Password validation */
 
       #password-rules {
         display: flex !important;
@@ -498,7 +447,6 @@
         color: #059669 !important;
       }
 
-      /*  Confirm Password */
       .confirmation-message-error {
         background: #f04848;
         color: white;
@@ -510,10 +458,6 @@
         margin-bottom: 16px;
         display: none;
       }
-
-      /* =========================================================
-           RESPONSIVE
-        ========================================================= */
 
       @media (max-width: 920px) {
         .left {
@@ -550,10 +494,6 @@
           height: 100% !important;
         }
       }
-
-      /* =========================================================
-      forgot password screen
-      ========================================================*/
 
       #redirect-login {
         width: 100%;
@@ -678,12 +618,10 @@
         }
       }
 
-      /* Permanently hide all Auth0 Lock global error messages */
       .auth0-global-message.auth0-global-message-error {
         display: none !important;
       }
 
-      /* Custom error message */
       .custom-error-message {
         display: none;
         background-color: #fef2f2;
@@ -710,13 +648,11 @@
         flex: 1;
       }
 
-      /* Prevent signup button from growing */
       .auth0-lock-submit {
         min-height: 40px !important;
         height: 40px !important;
       }
 
-      /* Add spacing for error messages */
       .auth0-global-message {
         margin-bottom: 16px !important;
         margin-top: -16px !important;
@@ -728,12 +664,10 @@
         margin-bottom: 0px !important;
       }
 
-      /* Ensure error messages don't overlap with inputs */
       .auth0-lock-input-block {
         margin-bottom: 12px !important;
       }
 
-      /* Success message styling */
       .signup-success-message {
         background-color: transparent;
         color: white;
@@ -799,7 +733,6 @@
         <div class="login_form">
           <div class="header_form">
             <h1>Log in to your account</h1>
-
             <p class="subtitle">Welcome back! Please enter your details</p>
           </div>
 
@@ -966,7 +899,7 @@
       var connection = config.connection;
       var prompt = config.prompt;
 
-      var initialScreen =  "login";
+      var initialScreen =  "signUp";
 
       var lock = new Auth0Lock(config.clientID, config.auth0Domain, {
         password_policy: "{{password_policy}}",
@@ -990,10 +923,8 @@
         allowLogin: true,
         allowSignUp: true,
         loginAfterSignup: false,
-
         theme: {
           logo: "https://daeda-panel-frontend-ten.vercel.app/daedalus_logo.svg",
-
           primaryColor: "#ff0000",
         },
         languageDictionary: {
@@ -1006,14 +937,12 @@
           forgotPasswordAction: "Forgot password?",
           forgotPasswordTitle: "Forgot your password?",
           forgotPasswordInstructions:
-            "We'll send you an email to reset your password if the email is registered in the system. If you still do not have an account in the system please conbsct an admin or support.",
+            "We'll send you an email to reset your password if the email is registered in the system. If you still do not have an account in the system please contact an admin or support.",
           forgotPasswordSubmitLabel: "Send email",
           loginSubmitLabel: "Sign in",
           blankErrorHint: "Cannot be blank",
         },
-
         container: "lock-container",
-
         closable: false,
       });
 
@@ -1055,24 +984,8 @@
         justSignedUp = true;
         signupSuccessful = true;
 
-        /*  if (window.location.search.includes('screen=signup')) {
-          var newUrl =
-            window.location.pathname +
-            window.location.search.replace(/[?&]screen=signup/, '');
-          if (newUrl.endsWith('?')) {
-            newUrl = newUrl.slice(0, -1);
-          }
-          window.history.replaceState({}, '', newUrl);
-        } */
-
         var successMessage = document.createElement("div");
         successMessage.className = "signup-success-message";
-        /* successMessage.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0ZM10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2ZM13.5 6.5L14.5 7.5L9 13L5.5 9.5L6.5 8.5L9 11L13.5 6.5Z" fill="white"/>
-          </svg>
-          Your account has been created successfully. Please log in with your credentials.
-        `; */
 
         var headerForm = document.querySelector(".header_form");
         if (headerForm) headerForm.insertAdjacentElement("afterend", successMessage);
@@ -1380,11 +1293,13 @@
         }, ms));
       }
 
+      // Safety net: observa el DOM del lock y re-intenta (Firefox/Lock re-render)
       (function attachLockObserver() {
         const container = document.getElementById("lock-container");
         if (!container) return;
 
         const obs = new MutationObserver(() => {
+          // Cada cambio del DOM puede re-renderizar el password block
           runEnhancementBurst();
         });
 
@@ -1430,14 +1345,13 @@
 
       function makeTabsClickable() {
         const tabs = document.querySelectorAll(".auth0-lock-tabs li");
-        console.log("Making tabs clickable, found:", tabs.length, tabs);
         tabs.forEach((li) => {
-          console.log("tab:", li);
+          if (li.dataset.tabsClickableReady) return;
           li.addEventListener("click", function (event) {
             const clickableElement = li.querySelector("a, span");
-            console.log("Tab clicked, clickable element:", clickableElement);
             if (!clickableElement) return;
             if (event.target !== clickableElement) clickableElement.click();
+            // Al cambiar tab, vuelve a correr burst
             setTimeout(runEnhancementBurst, 50);
           });
           li.dataset.tabsClickableReady = "true";
@@ -1574,6 +1488,7 @@
         runLabelFixBurst();
       })();
 
+      // --- Forgot password & back button logic (sin cambios funcionales grandes) ---
       let formSubmitted = false;
 
       document.addEventListener("click", function (e) {
@@ -1604,6 +1519,8 @@
           setTimeout(function () {
             lock.show({ initialScreen: "login" });
           }, 100);
+
+          // re-run enhancements after screen swap
           setTimeout(runEnhancementBurst, 150);
         }
       });
