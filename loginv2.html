@@ -1429,19 +1429,18 @@
       lock.on("signup ready", makeTabsClickable);
 
       function makeTabsClickable() {
-        const tabs = document.querySelectorAll(".auth0-lock-tabs li");
-        console.log("Making tabs clickable, found:", tabs.length, tabs);
+       setTimeout(() => {
+          const tabs = document.querySelectorAll(".auth0-lock-tabs li");
         tabs.forEach((li) => {
-          console.log("tab:", li);
           li.addEventListener("click", function (event) {
             const clickableElement = li.querySelector("a, span");
-            console.log("Tab clicked, clickable element:", clickableElement);
             if (!clickableElement) return;
             if (event.target !== clickableElement) clickableElement.click();
             setTimeout(runEnhancementBurst, 50);
           });
           li.dataset.tabsClickableReady = "true";
         });
+        }, 500);
       }
 
       function injectPasswordRulesAfterInput(inputElement) {
