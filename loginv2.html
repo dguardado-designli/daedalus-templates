@@ -976,7 +976,10 @@
           responseType:
             (config.internalOptions || {}).response_type ||
             (config.callbackOnLocationHash ? "token" : "code"),
-          params: config.internalOptions,
+          params: {
+            ...config.internalOptions,
+            'ext-remember-me': true,
+          },
         },
         configurationBaseUrl: config.clientConfigurationBaseUrl,
         overrides: {
