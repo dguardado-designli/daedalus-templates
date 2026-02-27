@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Sign In</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-primary-500: #ff0000;
+            --color-link-500: #0369A1;
+
+            --color-neutral-0: #ffffff;
+            --color-neutral-50: #EEEEEE;
+            --color-neutral-100: #D5D6D4;
+            --color-neutral-300: #A9ACAB;
+            --color-neutral-500: #6C7273;
+            --color-neutral-900: #101820;
+            --color-neutral-400: #E0E1E0;
+            --color-neutral-800: #525252;
+            --color-black: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            font-family: 'Inter', sans-serif !important;
+            height: 100%;
+            background: var(--color-neutral-50);
+        }
+
+
+        /* =========================================================
+           LAYOUT
+        ========================================================= */
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+        }
+
+
+        /* =========================================================
+           LEFT PANEL
+        ========================================================= */
+
+        .left {
+
+            flex: 1.05;
+            position: relative;
+            overflow: hidden;
+
+            background-image: url("https://daeda-panel-frontend-ten.vercel.app/Layout.png");
+            background-size: cover;
+            background-position: center;
+
+            border-top-left-radius: 24px;
+            border-bottom-left-radius: 24px;
+        }
+
+        .left::before {
+
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.12);
+        }
+
+        .left::after {
+
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0) 45%,
+                    rgba(0, 0, 0, 0.35) 70%,
+                    rgba(0, 0, 0, 0.75) 100%);
+        }
+
+
+        .left-top,
+        .left-bottom {
+
+            position: absolute;
+            z-index: 2;
+
+            left: 40px;
+            right: 40px;
+        }
+
+        .left-top {
+
+            top: 28px;
+        }
+
+        .left-logo {
+
+            height: 28px;
+            filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+        }
+
+        .left-bottom {
+
+            bottom: 42px;
+            color: white;
+        }
+
+        .left-bottom h2 {
+            font-family: 'Work Sans', sans-serif !important;
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 1.05;
+
+            margin-bottom: 12px;
+
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+        }
+
+        .left-bottom p {
+
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.88);
+
+            text-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+        }
+
+
+        /* =========================================================
+           RIGHT PANEL
+        ========================================================= */
+
+        .right {
+
+            flex: 1;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .login_form {
+
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 460px;
+
+            padding: 40px 32px;
+
+            border-radius: 24px;
+
+            background: var(--color-neutral-0);
+
+        }
+
+
+        .header_form {
+
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-family: 'Work Sans', sans-serif !important;
+            font-size: 24px;
+            font-weight: 600;
+            font-style: semibold;
+            line-height: 28.8px;
+            letter-spacing: -1px;
+            color: var(--color-neutral-900);
+        }
+
+        .subtitle {
+
+            font-size: 16px;
+            font-weight: 500;
+            font-style: medium;
+            line-height: 24px;
+            letter-spacing: 0px;
+            color: var(--color-neutral-500);
+            margin-top: 6px;
+        }
+
+        .lock-container-panel {
+            display: flex !important;
+            flex-direction: column !important;
+            margin-top: 16px !important;
+        }
+
+        /* =========================================================
+           AUTH0 LOCK BASE OVERRIDES
+        ========================================================= */
+
+        .auth0-lock.auth0-lock * {
+
+            font-family: inherit !important;
+        }
+
+        .auth0-lock-center {
+
+            padding: 0 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-header {
+
+            display: none !important;
+        }
+
+
+        /* =========================================================
+   FORCE AUTH0 LOCK TO MATCH FORM WIDTH
+========================================================= */
+
+        /* Lock main container must respect parent width */
+        #lock-container {
+            width: 100% !important;
+        }
+
+        /* Lock widget must not overflow form */
+        .auth0-lock.auth0-lock {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-center {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-widget {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        /* Tabs container must follow same width */
+        .auth0-lock.auth0-lock .auth0-lock-tabs-container {
+            width: 100% !important;
+        }
+
+        /* Tabs must respect parent width */
+        .auth0-lock.auth0-lock .auth0-lock-tabs {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        /* Ensure form itself matches tabs width */
+        .auth0-lock.auth0-lock .auth0-lock-form {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+
+        /* =========================================================
+           AUTH0 LOCK TABS (SEGMENTED CONTROL)
+        ========================================================= */
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs-container {
+            font-family: 'Inter', sans-serif !important;
+            padding: 0 !important;
+            margin-bottom: 35px !important;
+            display: flex;
+            justify-content: center;
+            margin-left: 0px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs {
+            width: 100% !important;
+            background: var(--color-neutral-400) !important;
+            border-radius: 24px !important;
+            padding: 4px !important;
+            height: 29px !important;
+            color: var(--color-black) !important;
+            box-shadow: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs li {
+
+            flex: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0px !important;
+            border-radius: 16px !important;
+            height: 29px !important;
+            transition: all 160ms ease !important;
+            color: var(--color-black) !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs li a,
+        .auth0-lock.auth0-lock .auth0-lock-tabs li span {
+            padding: 0px !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            font-style: semibold !important;
+            line-height: 20px !important;
+            letter-spacing: 0.5% !important;
+            transition: all 160ms ease !important;
+            color: var(--color-black) !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs li.auth0-lock-tabs-current {
+            background: var(--color-neutral-0) !important;
+            color: var(--color-black) !important;
+            box-shadow: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-tabs li::after {
+            display: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-form {
+            padding: 0px !important;
+        }
+
+
+        /* =========================================================
+           INPUTS
+        ========================================================= */
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap {
+
+            border-radius: 12px !important;
+            background-color: var(--color-neutral-0) !important;
+            border: 1px solid var(--color-neutral-400) !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-input {
+            border-radius: 12px !important;
+            padding: 0px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-input input::placeholder {
+            color: var(--color-neutral-400) !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 20px !important;
+            letter-spacing: 0.5% !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap svg.auth0-lock-icon {
+            display: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-email .auth0-lock-input-wrap {
+            background-image: url("https://placehold.co/40x40") !important;
+            background-repeat: no-repeat;
+            background-position: 14px center;
+            background-size: 18px;
+
+            padding-left: 44px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-input-password .auth0-lock-input-wrap {
+            background-image: url("https://placehold.co/40x40") !important;
+            background-repeat: no-repeat;
+            background-position: 14px center;
+            background-size: 18px;
+
+            padding-left: 44px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit {
+
+            background: var(--color-primary-500) !important;
+
+            border-radius: 12px !important;
+
+            padding: 0 !important;
+
+            margin-top: 20px !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit svg {
+            display: none !important;
+        }
+
+        .auth0-lock.auth0-lock .auth0-lock-submit:hover {
+
+            background: #cc0000 !important;
+        }
+
+        .auth0-lock-alternative {
+            text-align: right !important;
+            padding: 0 !important;
+            margin: 12px 0 !important;
+            text-decoration: underline !important;
+            color: var(--color-neutral-500) !important;
+        }
+
+        .auth0-lock-alternative a {
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            line-height: 20px !important;
+            letter-spacing: 0.5% !important;
+            color: var(--color-link-500) !important;
+        }
+
+        .auth0-lock-input-label {
+            color: var(--color-black) !important;
+            font-weight: 600 !important;
+            font-style: normal !important;
+            font-size: 12px !important;
+            line-height: 20px !important;
+            letter-spacing: 0.5% !important;
+            text-transform: uppercase !important;
+        }
+
+
+        /* ================================
+   Error message (Auth0 uses IDs)
+=================================== */
+        #auth0-lock-error-msg-email,
+        #auth0-lock-error-msg-password {
+            color: #EF4444 !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            margin-top: 6px !important;
+        }
+
+        /* ================================
+   Input text + placeholder (when described by an error msg)
+=================================== */
+        .auth0-lock.auth0-lock input[aria-describedby*="auth0-lock-error-msg"] {
+            color: #EF4444 !important;
+        }
+
+        .auth0-lock.auth0-lock input[aria-describedby*="auth0-lock-error-msg"]::placeholder {
+            color: #EF4444 !important;
+        }
+
+        /* ================================
+   Border and icon color (when described by an error msg)
+=================================== */
+
+        /* Modern browsers: border on wrapper */
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap:has(input[aria-describedby*="auth0-lock-error-msg"]) {
+            border: 1px solid #EF4444 !important;
+        }
+
+        /* Icon red (if icon SVG is inside same input wrap) */
+        .auth0-lock.auth0-lock .auth0-lock-input-wrap:has(input[aria-describedby*="auth0-lock-error-msg"]) svg {
+            fill: #EF4444 !important;
+        }
+
+        .auth0-lock-terms {
+            display: none !important;
+        }
+
+        /* =========================================================
+            Auth switch link
+        ========================================================= */
+
+        .auth-switch {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 14px !important;
+            color: var(--color-neutral-500) !important;
+            line-height: 20px !important;
+            letter-spacing: 0.5% !important;
+            font-weight: 600 !important;
+            margin: 20px 0 0 0 !important;
+        }
+
+        .auth-switch a {
+            color: var(--color-link-500);
+            text-decoration: none !important;
+        }
+
+        /*  Password validation */
+
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 920px) {
+
+            .left {
+
+                display: none;
+            }
+
+            .right {
+
+                padding: 24px;
+            }
+
+            .login_form {
+
+                max-width: 100%;
+            }
+        }
+
+        /* =========================================================
+      forgot password screen
+      ========================================================*/
+
+        #redirect-login {
+            width: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--color-primary-500);
+            color: white;
+            border-radius: 12px;
+            height: 40px;
+            text-decoration: none;
+        }
+
+        .lock-container-panel.forgot-password-success {
+            display: none !important;
+        }
+
+        .auth0-lock-password-strength {
+            display: block !important;
+            bottom: unset !important;
+            top: 55px !important;
+            display: flex !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .auth0-lock-password-strength::after {
+            display: none !important;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="page">
+
+
+        <div class="left">
+
+            <div class="left-top">
+
+                <img class="left-logo" src="https://daeda-panel-frontend-ten.vercel.app/Logo_Dark.png">
+
+            </div>
+
+
+            <div class="left-bottom">
+
+                <h2>
+                    Welcome to<br>
+                    DaedaPanel
+                </h2>
+
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="right">
+
+            <div class="login_form">
+
+                <div class="header_form">
+
+                    <h1>
+                        Log in into your account
+                    </h1>
+
+                    <p class="subtitle">
+                        Welcome back! Please enter your details
+                    </p>
+
+                </div>
+
+                <div class="lock-container-panel">
+                    <div id="lock-container"></div>
+                </div>
+                <p class="auth-switch" id="auth-switch"></p>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="https://cdn.auth0.com/js/lock/14.2.3/lock.min.js"></script>
+
+
+    <script>
+
+        var config =
+            JSON.parse(
+                decodeURIComponent(
+                    escape(
+                        window.atob('@@config@@')
+                    )
+                )
+            );
+
+        var urlParams =
+            new URLSearchParams(window.location.search);
+
+        var isSignUp =
+            urlParams.get('screen') === 'signup';
+
+        var initialScreen =
+            isSignUp ? 'signUp' : 'login';
+
+
+        var lock =
+            new Auth0Lock(
+                config.clientID,
+                config.auth0Domain,
+                {
+                    password_policy: '{{password_policy}}',
+                    password_complexity_options: '{{password_complexity_options}}',
+                    auth: {
+
+                        redirectUrl: config.callbackURL,
+
+                        responseType: 'code'
+                    },
+
+                    allowedConnections: [
+                        'Username-Password-Authentication'
+                    ],
+
+                    initialScreen: initialScreen,
+
+                    allowLogin: true,
+                    allowSignUp: true,
+
+                    theme: {
+
+                        logo:
+                            'https://placehold.co/160x37',
+
+                        primaryColor:
+                            '#ff0000'
+                    },
+                    rememberLastLogin: true,
+                    languageDictionary: {
+                        title: 'Welcome to DaedaPanel',
+                        description: 'Please enter your corresponding credentials',
+                        emailInputPlaceholder: 'Type your email address',
+                        passwordInputPlaceholder: 'Type your password',
+                        emailInputHeader: 'EMAIL ADDRESS',
+                        passwordInputHeader: 'PASSWORD',
+                        forgotPasswordAction: 'Forgot password?123',
+                        forgotPasswordTitle: 'Forgot your password?123',
+                        forgotPasswordInstructions:
+                            "We'll send you an email to reset your password if the email is registered in the system. If you still do not have an account in the system please contact an admin or support.",
+                        forgotPasswordSubmitLabel: 'Send email',
+                        loginSubmitLabel: 'Sign in',
+                        blankErrorHint: 'Cannot be blank',
+                    },
+
+                    container: "lock-container",
+
+                    closable: false
+                }
+            );
+
+
+        lock.show();
+
+
+        window.addEventListener('load', () => {
+            // Just in case, we run it again on load to cover any last-minute renders
+            addCustomLabels();
+            replaceLockErrorsByField();
+            updateHeaderFormText();
+        });
+
+
+        function replaceLockErrorsByField() {
+
+            // EMAIL error
+            const emailError =
+                document.getElementById('auth0-lock-error-msg-email');
+
+            if (emailError) {
+
+                const original = emailError.textContent.trim();
+
+                if (original === "Cannot be blank") {
+
+                    emailError.textContent =
+                        "The email is required123";
+
+                }
+
+                if (original === "Email is invalid") {
+
+                    emailError.textContent =
+                        "The email you entered is invalid123";
+
+                }
+
+            }
+
+
+            // PASSWORD error
+            const passwordError =
+                document.getElementById('auth0-lock-error-msg-password');
+
+            if (passwordError) {
+
+                const original = passwordError.textContent.trim();
+
+                if (original === "Cannot be blank") {
+
+                    passwordError.textContent =
+                        "The password is required123";
+
+                }
+
+            }
+
+        }
+
+        function updateHeaderFormText() {
+
+            const header = document.querySelector('.header_form');
+
+            if (!header) return;
+
+            const title = header.querySelector('h1');
+            const subtitle = header.querySelector('.subtitle');
+
+            var switchEl = document.getElementById('auth-switch');
+
+            if (!title || !subtitle || !switchEl) return;
+
+
+            const activeTab =
+                document.querySelector('.auth0-lock-tabs-current');
+
+            if (!activeTab) return;
+
+
+            const tabText =
+                activeTab.textContent.trim();
+
+
+            // LOGIN
+            if (tabText === "Log In") {
+
+                title.textContent =
+                    "Log in into your account123";
+
+                subtitle.textContent =
+                    "Welcome back! Please enter your details123";
+
+                switchEl.innerHTML = "Don’t 132 have an account?<a href=\"\"> Register</a>";
+
+                var link = document.getElementById("switch-signup");
+
+                if (link) {
+
+                    link.onclick = function (e) {
+
+                        e.preventDefault();
+
+                        lock.show({
+                            initialScreen: 'signUp'
+                        });
+
+                    };
+
+                }
+
+            }
+
+
+            // SIGN UP
+            else if (tabText === "Sign Up") {
+
+                title.textContent =
+                    "Create a new account";
+
+                subtitle.textContent =
+                    "Welcome! Please register your new account";
+
+                switchEl.style.display = "none";
+
+            }
+        }
+
+
+        function addCustomLabels() {
+            // EMAIL
+            var emailBlock = document.querySelector(
+                'div.auth0-lock-input-block.auth0-lock-input-email'
+            );
+
+            if (emailBlock) {
+                // Si no existe label, la agrega
+                if (!emailBlock.querySelector(':scope > .auth0-lock-input-label')) {
+                    var emailLabel = document.createElement('div');
+                    emailLabel.className = 'auth0-lock-input-label';
+                    emailLabel.textContent = 'EMAIL ADDRESS';
+                    emailBlock.insertBefore(emailLabel, emailBlock.firstChild);
+                }
+            }
+
+            // PASSWORD
+            var passwordBlock = document.querySelector(
+                'div.auth0-lock-input-block.auth0-lock-input-password'
+            );
+
+            if (passwordBlock) {
+                if (!passwordBlock.querySelector(':scope > .auth0-lock-input-label')) {
+                    var passwordLabel = document.createElement('div');
+                    passwordLabel.className = 'auth0-lock-input-label';
+                    passwordLabel.textContent = 'PASSWORD';
+                    passwordBlock.insertBefore(passwordLabel, passwordBlock.firstChild);
+                }
+            }
+        }
+
+        // Executes multiple times "in a row" to cover cascading renders
+        function runLabelFixBurst() {
+            addCustomLabels();
+            replaceLockErrorsByField();
+            updateHeaderFormText();
+        }
+
+        // 1) Each time Lock shows / changes view
+        lock.on('show', runLabelFixBurst);
+
+        // 2) Observer: if Lock re-renders and removes labels, we put them back
+        (function attachObserver() {
+            var container = document.getElementById('lock-container');
+            if (!container) return;
+
+            var observer = new MutationObserver(function () {
+                // Reinject on every relevant mutation
+                addCustomLabels();
+                replaceLockErrorsByField();
+                updateHeaderFormText();
+            });
+
+            observer.observe(container, {
+                childList: true,
+                subtree: true
+            });
+
+            // First immediate run to cover initial render
+            runLabelFixBurst();
+        })();
+
+        // Customize forgot password screen
+        let formSubmitted = false;
+
+
+            // Define the function to run when the event occurs
+            function handleChange(event) {
+                console.log('Input v alue changed:', event.target.value);
+                // You can add more logic here
+            }
+
+        lock.on('signup ready', () => {
+            const inputElement = document.querySelector('input[name="password"]');
+            if (inputElement) {
+                inputElement.addEventListener('input', handleChange);
+            };
+        });
+
+        lock.on('signin ready', () => {
+            console.log('Signin ready');
+        });
+
+        lock.on('forgot_password ready', () => {
+            const formHeader = document.querySelector('.header_form');
+            const paragraph = document.querySelector('.auth0-lock-form > div > p');
+            const input = document.querySelector('.auth0-lock-input-block.auth0-lock-input-email');
+
+            if (formHeader) {
+                const title = formHeader.querySelector('h1');
+                const subtitle = formHeader.querySelector('.subtitle');
+                if (title) title.textContent = 'Forgot password?';
+                if (subtitle) subtitle.textContent = 'Please enter your email address. We will send you an link to reset your password.';
+            }
+            if (paragraph) {
+                paragraph.style.display = 'none';
+            }
+            if (input) {
+                input.style.marginBottom = '32px';
+                input.classList.add('forgot-password-input-email');
+            }
+        });
+
+        lock.on('forgot_password submit', () => {
+            formSubmitted = true;
+        });
+
+        const observer = new MutationObserver(() => {
+            const confirmation = document.querySelector(
+                '.auth0-global-message.auth0-global-message-success'
+            );
+
+            if (confirmation && formSubmitted) {
+                // hide widget
+                const formBox = document.querySelector('.lock-container-panel');
+
+                // hide header and body of the form
+                if (formBox) formBox.classList.add('forgot-password-success');
+                const redirectLink = document.getElementById('redirect-login');
+                if (redirectLink) {
+                    const link = config.callbackURL || '/';
+                    const cleanLink = link.replace('/auth/callback', '');
+                    redirectLink.style.display = 'flex';
+                    redirectLink.href = cleanLink;
+                }
+                const formHeader = document.querySelector('.header_form');
+                if (formHeader) {
+                    const title = formHeader.querySelector('h1');
+                    const subtitle = formHeader.querySelector('.subtitle');
+                    if (title) title.textContent = 'We’ve sent you an email';
+                    if (subtitle) subtitle.textContent = 'Check your inbox for password reset instructions.';
+                }
+
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+    </script>
+
+</body>
+
+</html>
